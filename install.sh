@@ -15,8 +15,27 @@ required_software=(
     jamesdsp
 )
 
-echo "Installing base dependencies..."
-sudo pacman -S --needed --noconfirm git base-devel go
+IFS=$'\n\t'
+
+# Ensure sudo exists
+if ! command -v sudo &>/dev/null; then
+    pacman -Sy --noconfirm sudo
+fi
+sudo -v
+
+# Update system
+sudo pacman -Syu --noconfirm
+
+# Essentials
+sudo pacman -S --needed --noconfirm base-devel git curl wget go
+
+# Multilib support
+sudo sed -i '/^\[multilib\]/,/Include/ s/^#//' /etc/pacman.conf
+sudo pacman -Syu --noconfirm
+
+# Wayland essentials + terminal
+sudo pacman -S --needed --noconfirm xorg-xwayland mesa libinput weston \
+    wayland-protocols wl-clipboard foot alacritty
 
 install_yay() {
     if command -v yay &>/dev/null; then
