@@ -51,8 +51,6 @@ for software in "${required_software[@]}"; do
 done
 echo "All required software installed." 
 
-sudo -k
-
 # clone dotfiles repo if [ ! -d "$HOME/dotfiles" ]; then
 echo "Cloning dotfiles repository..."
 git clone $DOTFILES_REPO
