@@ -28,6 +28,8 @@ for software in "${required_software[@]}"; do
 done
 echo "All required software installed." 
 
+# Deescalate the sudo move to user session
+sudo -k
 
 # clone dotfiles repo if [ ! -d "$HOME/dotfiles" ]; then
 echo "Cloning dotfiles repository..."
