@@ -21,6 +21,9 @@ echo "git and base-devel installed."
 
 # install yay
 echo "Installing yay..."
+# # currently go version in arch repos is 1.23, need 1.24+
+# sudo pacman -S "go>=1.24" --noconfirm
+# #################################
 cd /tmp
 git clone https://aur.archlinux.org/yay.git
 cd yay
@@ -37,6 +40,8 @@ for software in "${required_software[@]}"; do
     echo "$software installed."
 done
 echo "All required software installed." 
+
+sudo -k
 
 # clone dotfiles repo if [ ! -d "$HOME/dotfiles" ]; then
 echo "Cloning dotfiles repository..."
