@@ -34,7 +34,7 @@ sudo sed -i '/^\[multilib\]/,/Include/ s/^#//' /etc/pacman.conf
 sudo pacman -Syu --noconfirm
 
 # Wayland essentials + terminal
-sudo pacman -S --needed --noconfirm xorg-xwayland mesa libinput weston \
+sudo pacman -S --needed --noconfirm xorg-xwayland mesa libinput \
     wayland-protocols wl-clipboard foot alacritty
 
 install_yay() {
@@ -51,6 +51,8 @@ install_yay() {
 }
 
 install_yay
+### Install Qt6 (required by jamesdsp)
+sudo pacman -S qt6 --needed
 
 echo "Installing required software..."
 for pkg in "${required_software[@]}"; do
