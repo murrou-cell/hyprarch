@@ -55,6 +55,8 @@ install_yay
 sudo pacman -S qt6 --needed
 
 echo "Installing required software..."
+oldIFS=$IFS
+IFS=$'\n'
 for pkg in "${required_software[@]}"; do
     yay -S --needed --noconfirm "$pkg"
 done
