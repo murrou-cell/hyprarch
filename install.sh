@@ -1,54 +1,43 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-$DOTFILES_REPO = "https://github.com/murrou-cell/hyprarch.git"
+DOTFILES_REPO="https://github.com/murrou-cell/hyprarch.git"
 
 required_software=(
-    "stow"
-    "hyprpaper"
-    "swaync"
-    "waybar"
-    "hyprlock"
-    "hypridle"
-    "blueman"
-    "pavucontrol"
-    "jamesdsp"
+    stow
+    hyprpaper
+    swaync
+    waybar
+    hyprlock
+    hypridle
+    blueman
+    pavucontrol
+    jamesdsp
 )
 
-# install git and base-devel if not installed
-echo "Installing git and base-devel..."
-sudo pacman -S --noconfirm git base-devel
-echo "git and base-devel installed."
+echo "Installing base dependencies..."
+sudo pacman -S --needed --noconfirm git base-devel go
 
-# install yay
-echo "Installing yay..."
-# # currently go version in arch repos is 1.23, need 1.24+
-# sudo pacman -S "go>=1.24" --noconfirm
-# #################################
-cd /tmp
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-## get the output of last command
-if [[ $? -ne 0 ]]; then
-    echo "Error installing yay. Exiting."
-    exit 1
-fi
-cd ..
-rm -rf yay
-echo "yay installed."
-
-# Install required software
-echo "Installing required software..."
-for software in "${required_software[@]}"; do
-    echo "Installing $software..."
-    yay -S --noconfirm "$software"
-    # check the output of last command
-    if [[ $? -ne 0 ]]; then
-        echo "Error installing $software. Exiting."
-        exit 1
+install_yay() {
+    if command -v yay &>/dev/null; then
+        echo "yay already installed"
+        return
     fi
-    echo "$software installed."
+
+    cd /tmp
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si --noconfirm
+    hash -r
+}
+
+install_yay
+
+echo "Installing required software..."
+for pkg in "${required_software[@]}"; do
+    yay -S --needed --noconfirm "$pkg"
 done
+
 echo "All required software installed." 
 
 # clone dotfiles repo if [ ! -d "$HOME/dotfiles" ]; then
