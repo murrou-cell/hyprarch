@@ -4,6 +4,8 @@ set -euo pipefail
 DOTFILES_REPO="https://github.com/murrou-cell/hyprarch.git"
 
 required_software=(
+    ttf-dejavu
+    ttf-font-awesome 
     stow
     hyprpaper
     swaync
