@@ -1,5 +1,7 @@
 #!/bin/bash
 
+$DOTFILES_REPO = "https://github.com/murrou-cell/hyprarch.git"
+
 required_software=(
     "stow"
     "hyprpaper"
@@ -38,7 +40,7 @@ echo "All required software installed."
 
 # clone dotfiles repo if [ ! -d "$HOME/dotfiles" ]; then
 echo "Cloning dotfiles repository..."
-git clone https://github.com/murrou-cell/hyprarch.git
+git clone $DOTFILES_REPO
 
 echo "Configuring wallpapers for each monitor..."
 
@@ -61,6 +63,11 @@ for i in "${!MONITORS[@]}"; do
 
     echo "Configured wallpaper for monitor $MONITOR_NAME"
 done
+
+# change the $terminal variable in hyprland.conf to currently configured one
+CURRENT_TERMINAL=$(grep -oP '^\$terminal\s*=\s*\K.*' ~/.config/hypr/hyprland.conf 2>/dev/null || echo "kitty")
+sed -i "s/^\(\$terminal\s*=\s*\).*/\1$CURRENT_TERMINAL/" ~/hyprarch/dotfiles/hypr/hyprland.conf
+echo "Set terminal in hyprland.conf to $CURRENT_TERMINAL"
 
 # Copy all dotfiles to $HOME/.config
 echo "Copying dotfiles to $HOME/.config..."
