@@ -1,0 +1,130 @@
+{
+    "layer": "bot", // Waybar at top layer
+    "position": "top", // Waybar at the top of your screen
+    "height": 24, // Waybar height
+    //"width": 1366, // Waybar width
+    "modules-left": [
+        "custom/arch-updates",
+        "tray"
+    ],
+    "modules-center": [
+        "hyprland/workspaces"
+    ],
+    "modules-right": [
+        "mpris",
+        "custom/pipewire",
+        "custom/jamesDSP",
+        "pulseaudio",
+        "network",
+        "battery",
+        "bluetooth",
+        "hyprland/language",
+        "clock"
+    ],
+    "mpris": {
+        "format": "{player_icon} {dynamic}",
+        "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "max-length": 30,
+        "player-icons": {
+            "firefox": "\uf269"
+        },
+        "status-icons": {
+            "paused": "⏸"
+        }
+    },
+    "custom/arch-updates": {
+        "format": "{text}",
+        "interval": 3600,
+        "exec": "~/.config/waybar/updates.sh",
+        "return-type": "json",
+        "on-click": "~/.config/waybar/update.sh",
+        "tooltip": true
+    },
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{icon}",
+        "format-icons": {
+            "active": "●",
+            "default": "○"
+        }
+    },
+    "hyprland/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "tray": {
+        "icon-size": 5,
+        "spacing": 10
+    },
+    "clock": {
+        "format-alt": "{:%Y-%m-%d}",
+        "tooltip-format": "{:%A, %B %d, %Y}"
+    },
+    "battery": {
+        "bat": "BAT0",
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} ",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+    },
+    "network": {
+        "format-wifi": "",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+        "format-disconnected": "Disconnected ⚠",
+        "on-click": "/home/murrou/.config/waybar/wifimenu.sh"
+    },
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-bluetooth": "{icon}",
+        "format-muted": "",
+        "format-icons": {
+            "headphones": "",
+            "handsfree": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": [
+                "",
+                ""
+            ]
+        },
+        "on-click": "pavucontrol"
+    },
+    "bluetooth": {
+        "format": "\uf293 {status}",
+        "format-disabled": "\uf294 ",
+        "format-off": "\uf293 ",
+        "format-on": "\uf293 ",
+        "format-connected": "\uf293  {num_connections}",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "on-click": "blueman-manager"
+    },
+    "custom/jamesDSP": {
+        "format": " ",
+        "tooltip-format": "JamesDSP",
+        "on-click": "jamesdsp"
+    },
+    "hyprland/language": {
+        "format": "{short}",
+        "keyboard-name": "at-translated-set-2-keyboard",
+        "menu": "on-click",
+        "menu-file": "~/.config/waybar/lang_menu.xml",
+        "menu-actions": {
+            "us": "hyprctl switchxkblayout at-translated-set-2-keyboard 0",
+            "bg": "hyprctl switchxkblayout at-translated-set-2-keyboard 1"
+        }
+    }
+}
