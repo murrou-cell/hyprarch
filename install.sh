@@ -16,7 +16,7 @@ required_software=(
 
 # install yay
 echo "Installing yay..."
-sudo pacman -S -noconfirm yay
+sudo pacman -S --noconfirm yay
 echo "yay installed."
 
 # Install required software
