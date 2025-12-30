@@ -1,8 +1,6 @@
 #!/bin/bash
 
 required_software=(
-    "git"
-    "base-devel"
     "stow"
     "hyprpaper"
     "swaync"
@@ -14,9 +12,19 @@ required_software=(
     "jamesdsp"
 )
 
+# install git and base-devel if not installed
+echo "Installing git and base-devel..."
+sudo pacman -S --noconfirm git base-devel
+echo "git and base-devel installed."
+
 # install yay
 echo "Installing yay..."
-sudo pacman -S --noconfirm yay
+cd /tmp
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+cd ..
+rm -rf yay
 echo "yay installed."
 
 # Install required software
@@ -27,9 +35,6 @@ for software in "${required_software[@]}"; do
     echo "$software installed."
 done
 echo "All required software installed." 
-
-# Deescalate the sudo move to user session
-sudo -k
 
 # clone dotfiles repo if [ ! -d "$HOME/dotfiles" ]; then
 echo "Cloning dotfiles repository..."
