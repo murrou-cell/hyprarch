@@ -4,7 +4,7 @@ set -euo pipefail
 DOTFILES_REPO="https://github.com/murrou-cell/hyprarch.git"
 
 required_software=(
-    hyprland-git
+    hyprland-git-bin
     ttf-dejavu
     ttf-font-awesome 
     stow
