@@ -28,6 +28,11 @@ cd /tmp
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si
+## get the output of last command
+if [[ $? -ne 0 ]]; then
+    echo "Error installing yay. Exiting."
+    exit 1
+fi
 cd ..
 rm -rf yay
 echo "yay installed."
@@ -37,6 +42,11 @@ echo "Installing required software..."
 for software in "${required_software[@]}"; do
     echo "Installing $software..."
     yay -S --noconfirm "$software"
+    # check the output of last command
+    if [[ $? -ne 0 ]]; then
+        echo "Error installing $software. Exiting."
+        exit 1
+    fi
     echo "$software installed."
 done
 echo "All required software installed." 
