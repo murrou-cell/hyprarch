@@ -19,20 +19,23 @@ required_software=(
 )
 
 IFS=$'\n\t'
-
+echo "Starting installation of HyprArch dotfiles..."
 # Ensure sudo exists
 if ! command -v sudo &>/dev/null; then
     pacman -Sy --noconfirm sudo
 fi
 sudo -v
-
+echo "Sudo verified."   
 # Update system
+echo "Updating system..."
 sudo pacman -Syu --noconfirm
 
 # Essentials
+echo "Installing base development packages..."  
 sudo pacman -S --needed --noconfirm base-devel git curl wget go
-
+echo "Base development packages installed."
 # Multilib support
+echo "Enabling multilib repository..."
 sudo sed -i '/^\[multilib\]/,/Include/ s/^#//' /etc/pacman.conf
 sudo pacman -Syu --noconfirm
 
@@ -41,7 +44,7 @@ sudo pacman -Syu --noconfirm
 #     wayland-protocols wl-clipboard foot alacritty
 
 # DEBUG
-sudo pacman -S -needed --noconfirm foot
+sudo pacman -S --needed --noconfirm foot
 
 sudo pacman -S hyprland --needed --noconfirm
 
