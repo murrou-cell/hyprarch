@@ -3,6 +3,13 @@ set -euo pipefail
 
 DOTFILES_REPO="https://github.com/murrou-cell/hyprarch.git"
 
+# prompt for kitty or foot terminal
+read -p "Which terminal do you want to install? (kitty/foot): " TERMINAL_CHOICE
+if [[ "$TERMINAL_CHOICE" != "kitty" && "$TERMINAL_CHOICE" != "foot" ]]; then
+    echo "Invalid choice. Please choose either 'kitty' or 'foot'."
+    exit 1
+fi
+
 required_software_yay=(
     kitty
     ttf-jetbrains-mono-nerd
@@ -28,6 +35,17 @@ required_software_pacman=(
     go
     foot # DEBUG
 )
+
+set_terminal_in_hyprland_conf() {
+    local terminal="$1"
+    local hyprland_conf="$HOME/.config/hypr/hyprland.conf"
+
+    if grep -q '^\$terminal\s*=' "$hyprland_conf"; then
+        sed -i "s|^\(\$terminal\s*=\s*\).*|\1$terminal|" "$hyprland_conf"
+    else
+        echo "\$terminal = $terminal" >> "$hyprland_conf"
+    fi
+}
 
 install_pacman_packages() {
     echo "Installing required pacman packages..."
@@ -162,6 +180,10 @@ dotfiles_installation
 echo "Dotfiles installed."
 handle_firstboot
 echo "First boot configuration handled."
+
+set_terminal_in_hyprland_conf "$TERMINAL_CHOICE"
+echo "Terminal set in hyprland.conf."
+
 echo "Installation complete."
 
 start-hyprland
