@@ -97,6 +97,7 @@ dotfiles_installation() {
 }
 
 handle_firstboot() {
+    
 echo "Creating first boot configuration script..."
 
 touch ~/.config/hypr/.firstboot
