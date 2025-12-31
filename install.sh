@@ -15,6 +15,7 @@ required_software=(
     blueman
     pavucontrol
     wofi
+    vim
     # jamesdsp
 )
 
