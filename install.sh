@@ -84,6 +84,13 @@ fi
 git clone $DOTFILES_REPO
 
 
+# Copy all dotfiles to $HOME/.config
+echo "Copying dotfiles to $HOME/.config..."
+mkdir -p "$HOME/.config"
+cp -r ~/hyprarch/dotfiles/.config/* "$HOME/.config/"
+echo "Dotfiles copied."
+
+
 # TODO: MAKE THIS EXECUTABLE SCRIPT AND PUT IT in exec-once in hyprland.conf also remove it from there when it is finished
 touch ~/.config/hypr/.firstboot
 
@@ -131,10 +138,5 @@ fi
 # sed -i "s/^\(\$terminal\s*=\s*\).*/\1$CURRENT_TERMINAL/" ~/hyprarch/dotfiles/.config/hypr/hyprland.conf
 # echo "Set terminal in hyprland.conf to $CURRENT_TERMINAL"
 
-# Copy all dotfiles to $HOME/.config
-echo "Copying dotfiles to $HOME/.config..."
-mkdir -p "$HOME/.config"
-cp -r ~/hyprarch/dotfiles/.config/* "$HOME/.config/"
-echo "Dotfiles copied."
 
 start-hyprland
