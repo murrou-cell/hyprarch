@@ -77,10 +77,10 @@
         ]
     },
     "network": {
-        "format-wifi": " ",
+        "format-wifi": "",
         "tooltip-format-wifi": "{essid} ({signalStrength}%)",
-        "format-ethernet": " ",
-        "format-disconnected": "⚠ ",
+        "format-ethernet": "",
+        "format-disconnected": "⚠",
         "on-click": "/home/murrou/.config/waybar/wifimenu.sh"
     },
     "pulseaudio": {
@@ -106,7 +106,7 @@
         "format-disabled": "\uf294 ",
         "format-off": "\uf293 ",
         "format-on": "\uf293 ",
-        "format-no-controller": "",
+        "format-no-controller": " ",
         "format-connected": "\uf293  {num_connections}",
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
