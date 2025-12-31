@@ -78,25 +78,25 @@ git clone $DOTFILES_REPO
 echo "Configuring wallpapers for each monitor..."
 
 # MONITORS=$(hyprctl -j get_monitors | jq length)
-MONITORS=($(hyprctl monitors all | awk '/^Monitor / {gsub(/^Monitor |:$/,""); print $1}'))
-# modify dotfiles/hypr/hyprpaper.conf to set wallpapers for each monitor
-echo "Found ${#MONITORS[@]} monitors."
-for i in "${!MONITORS[@]}"; do
-    MONITOR_NAME=${MONITORS[$i]}
-    WALLPAPER_PATH="$HOME/.config/hypr/wallpaper.jpg"
-    # wallpaper {
-    #     monitor = eDP-1
-    #     path = ~/.config/hypr/wallpaper.jpg
-    #     fit_mode = cover
-    # }
-    # rm file if exists
-    rm -f ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
-    sed -i "/^wallpaper {/,/^}/ s/^\(\s*monitor = \).*/\1$MONITOR_NAME/" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
-    sed -i "/^wallpaper {/,/^}/ s#^\(\s*path = \).*#\1 $WALLPAPER_PATH#" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
-    sed -i "/^wallpaper {/,/^}/ s/^\(\s*fit_mode = \).*/\1cover/" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
+# MONITORS=($(hyprctl monitors all | awk '/^Monitor / {gsub(/^Monitor |:$/,""); print $1}'))
+# # modify dotfiles/hypr/hyprpaper.conf to set wallpapers for each monitor
+# echo "Found ${#MONITORS[@]} monitors."
+# for i in "${!MONITORS[@]}"; do
+#     MONITOR_NAME=${MONITORS[$i]}
+#     WALLPAPER_PATH="$HOME/.config/hypr/wallpaper.jpg"
+#     # wallpaper {
+#     #     monitor = eDP-1
+#     #     path = ~/.config/hypr/wallpaper.jpg
+#     #     fit_mode = cover
+#     # }
+#     # rm file if exists
+#     rm -f ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
+#     sed -i "/^wallpaper {/,/^}/ s/^\(\s*monitor = \).*/\1$MONITOR_NAME/" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
+#     sed -i "/^wallpaper {/,/^}/ s#^\(\s*path = \).*#\1 $WALLPAPER_PATH#" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
+#     sed -i "/^wallpaper {/,/^}/ s/^\(\s*fit_mode = \).*/\1cover/" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
 
-    echo "Configured wallpaper for monitor $MONITOR_NAME"
-done
+#     echo "Configured wallpaper for monitor $MONITOR_NAME"
+# done
 
 # change the $terminal variable in hyprland.conf to currently configured one
 CURRENT_TERMINAL=$(grep -oP '^\$terminal\s*=\s*\K.*' ~/.config/hypr/hyprland.conf 2>/dev/null || echo "kitty")
