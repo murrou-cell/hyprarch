@@ -69,6 +69,10 @@ echo "All required software installed."
 
 # clone dotfiles repo if [ ! -d "$HOME/dotfiles" ]; then
 echo "Cloning dotfiles repository..."
+# if directory exists, remove it first
+if [ -d "$HOME/hyprarch/dotfiles" ]; then
+    rm -rf "$HOME/hyprarch/dotfiles"
+fi
 git clone $DOTFILES_REPO
 
 echo "Configuring wallpapers for each monitor..."
