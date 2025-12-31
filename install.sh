@@ -137,4 +137,4 @@ mkdir -p "$HOME/.config"
 cp -r ~/hyprarch/dotfiles/.config/* "$HOME/.config/"
 echo "Dotfiles copied."
 
-start-hyprarch
+start-hyprland
