@@ -70,8 +70,8 @@ echo "All required software installed."
 # clone dotfiles repo if [ ! -d "$HOME/dotfiles" ]; then
 echo "Cloning dotfiles repository..."
 # if directory exists, remove it first
-if [ -d "$HOME/hyprarch/dotfiles" ]; then
-    rm -rf "$HOME/hyprarch/dotfiles"
+if [ -d "$HOME/hyprarch" ]; then
+    rm -rf "$HOME/hyprarch"
 fi
 git clone $DOTFILES_REPO
 
