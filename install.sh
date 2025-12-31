@@ -92,6 +92,8 @@ echo "Dotfiles copied."
 
 
 # TODO: MAKE THIS EXECUTABLE SCRIPT AND PUT IT in exec-once in hyprland.conf also remove it from there when it is finished
+echo "Creating first boot configuration script..."
+
 touch ~/.config/hypr/.firstboot
 
 cat > ~/.config/hypr/firstboot.sh << 'EOF'
@@ -129,7 +131,7 @@ chmod +x ~/.config/hypr/firstboot.sh
 # make firstboot exec-once in hyprland.conf
 if ! grep -q "exec-once = ~/.config/hypr/firstboot.sh" ~/.config/hypr/hyprland.conf; then
     echo "Adding firstboot exec-once to hyprland.conf..."
-    echo "exec-once = ~/.config/hypr/firstboot.sh" >> ~/.config/hypr/hyprland.conf
+    echo "exec-once = ~/.config/hypr/firstboot.sh > ~/.config/hypr/firstboot.log 2>&1" >> ~/.config/hypr/hyprland.conf
     echo "firstboot exec-once added."
 fi
 
