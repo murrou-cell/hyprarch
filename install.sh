@@ -4,7 +4,7 @@ set -euo pipefail
 DOTFILES_REPO="https://github.com/murrou-cell/hyprarch.git"
 
 required_software=(
-    # hyprland-git-bin
+    kitty
     ttf-dejavu
     ttf-font-awesome 
     stow
@@ -38,9 +38,14 @@ sudo sed -i '/^\[multilib\]/,/Include/ s/^#//' /etc/pacman.conf
 sudo pacman -Syu --noconfirm
 
 # Wayland essentials + terminal
-sudo pacman -S --needed --noconfirm xorg-xwayland mesa libinput \
-    wayland-protocols wl-clipboard foot alacritty
+# sudo pacman -S --needed --noconfirm xorg-xwayland mesa libinput \
+#     wayland-protocols wl-clipboard foot alacritty
+
+# DEBUG
+sudo pacman -S -needed --noconfirm foot
+
 sudo pacman -S hyprland --needed --noconfirm
+
 install_yay() {
     if command -v yay &>/dev/null; then
         echo "yay already installed"
@@ -68,7 +73,6 @@ done
 
 echo "All required software installed." 
 
-# clone dotfiles repo if [ ! -d "$HOME/dotfiles" ]; then
 echo "Cloning dotfiles repository..."
 # if directory exists, remove it first
 if [ -d "$HOME/hyprarch" ]; then
