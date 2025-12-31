@@ -101,7 +101,10 @@ cat > ~/.config/hypr/firstboot.sh << 'EOF'
 set -euo pipefail
 
 echo "Configuring wallpapers for each monitor..."
-
+if [[ ! -f "$HOME/.config/hypr/hyprpaper.conf" ]]; then
+    echo "hyprpaper.conf not found, skipping wallpaper setup"
+    exit 0
+fi
 MONITORS=($(hyprctl monitors all | awk '/^Monitor / {gsub(/^Monitor |:$/,""); print $1}'))
 echo "Found ${#MONITORS[@]} monitors."
 
@@ -121,7 +124,9 @@ rm -f ~/.config/hypr/.firstboot
 rm -f ~/.config/hypr/firstboot.sh
 
 # Remove exec-once line from hyprland.conf
-sed -i '/^exec-once = ~/.config\/hypr\/firstboot.sh/d' ~/.config/hypr/hyprland.conf
+sed -i "\|^exec-once = $HOME/.config/hypr/firstboot.sh|d" \
+    "$HOME/.config/hypr/hyprland.conf"
+
 
 echo "First boot configuration complete."
 EOF
