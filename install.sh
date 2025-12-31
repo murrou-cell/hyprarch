@@ -15,7 +15,7 @@ required_software=(
     hypridle
     blueman
     pavucontrol
-    jamesdsp
+    # jamesdsp
 )
 
 IFS=$'\n\t'
