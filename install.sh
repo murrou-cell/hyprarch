@@ -80,6 +80,7 @@ echo "Configuring wallpapers for each monitor..."
 # MONITORS=$(hyprctl -j get_monitors | jq length)
 MONITORS=($(hyprctl monitors all | awk '/^Monitor / {gsub(/^Monitor |:$/,""); print $1}'))
 # modify dotfiles/hypr/hyprpaper.conf to set wallpapers for each monitor
+echo "Found ${#MONITORS[@]} monitors."
 for i in "${!MONITORS[@]}"; do
     MONITOR_NAME=${MONITORS[$i]}
     WALLPAPER_PATH="$HOME/.config/hypr/wallpaper.jpg"
