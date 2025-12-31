@@ -3,7 +3,7 @@ set -euo pipefail
 
 DOTFILES_REPO="https://github.com/murrou-cell/hyprarch.git"
 
-required_software=(
+required_software_yay=(
     kitty
     ttf-font-awesome 
     stow
@@ -19,35 +19,23 @@ required_software=(
     # jamesdsp
 )
 
-IFS=$'\n\t'
-echo "Starting installation of HyprArch dotfiles..."
-# Ensure sudo exists
-if ! command -v sudo &>/dev/null; then
-    pacman -Sy --noconfirm sudo
-fi
-sudo -v
-echo "Sudo verified."   
-# Update system
-echo "Updating system..."
-sudo pacman -Syu --noconfirm
+required_software_pacman=(
+    hyprland
+    git
+    curl
+    wget
+    base-devel
+    go
+    foot # DEBUG
+)
 
-# Essentials
-echo "Installing base development packages..."  
-sudo pacman -S --needed --noconfirm base-devel git curl wget go
-echo "Base development packages installed."
-
-# Multilib support
-echo "Enabling multilib repository..."
-sudo sed -i '/^\[multilib\]/,/Include/ s/^#//' /etc/pacman.conf
-sudo pacman -Syu --noconfirm
-echo "Multilib repository enabled."
-
-# DEBUG
-sudo pacman -S --needed --noconfirm foot
-#
-# Install Hyprland from official repos
-echo "Installing Hyprland..."
-sudo pacman -S hyprland --needed --noconfirm
+install_pacman_packages() {
+    echo "Installing required pacman packages..."
+    for pkg in "${required_software_pacman[@]}"; do
+        sudo pacman -S --needed --noconfirm "$pkg"
+    done
+    echo "All required pacman packages installed."
+}
 
 install_yay() {
     if command -v yay &>/dev/null; then
@@ -62,21 +50,15 @@ install_yay() {
     hash -r
 }
 
-install_yay
-echo "yay installed."
+install_yay_packages() {
+    echo "Installing required yay packages..."
+    for pkg in "${required_software_yay[@]}"; do
+        yay -S --needed --noconfirm "$pkg"
+    done
+    echo "All required yay packages installed."
+}
 
-### Install Qt6 (required by jamesdsp)
-# sudo pacman -S --needed qt6-base qt6-tools qt6-declarative
-
-
-echo "Installing required software..."
-# oldIFS=$IFS
-# IFS=$'\n'
-for pkg in "${required_software[@]}"; do
-    yay -S --needed --noconfirm "$pkg"
-done
-echo "All required software installed." 
-
+dotfiles_installation() {
 echo "Cloning dotfiles repository..."
 # if directory exists, remove it first
 if [ -d "$HOME/hyprarch" ]; then
@@ -90,9 +72,9 @@ echo "Copying dotfiles to $HOME/.config..."
 mkdir -p "$HOME/.config"
 cp -r ~/hyprarch/dotfiles/.config/* "$HOME/.config/"
 echo "Dotfiles copied."
+}
 
-
-# TODO: MAKE THIS EXECUTABLE SCRIPT AND PUT IT in exec-once in hyprland.conf also remove it from there when it is finished
+handle_firstboot() {
 echo "Creating first boot configuration script..."
 
 touch ~/.config/hypr/.firstboot
@@ -141,10 +123,41 @@ if ! grep -q "exec-once = ~/.config/hypr/firstboot.sh" ~/.config/hypr/hyprland.c
     echo "firstboot exec-once added."
 fi
 
-# change the $terminal variable in hyprland.conf to currently configured one
-# CURRENT_TERMINAL=$(grep -oP '^\$terminal\s*=\s*\K.*' ~/.config/hypr/hyprland.conf 2>/dev/null || echo "kitty")
-# sed -i "s/^\(\$terminal\s*=\s*\).*/\1$CURRENT_TERMINAL/" ~/hyprarch/dotfiles/.config/hypr/hyprland.conf
-# echo "Set terminal in hyprland.conf to $CURRENT_TERMINAL"
+}
 
+IFS=$'\n\t'
+
+echo "Starting installation..."
+# Ensure sudo exists
+if ! command -v sudo &>/dev/null; then
+    pacman -Sy --noconfirm sudo
+fi
+sudo -v
+echo "Sudo verified."   
+# Update system
+echo "Updating system..."
+sudo pacman -Syu --noconfirm
+
+# Multilib support
+echo "Enabling multilib repository..."
+sudo sed -i '/^\[multilib\]/,/Include/ s/^#//' /etc/pacman.conf
+sudo pacman -Syu --noconfirm
+echo "Multilib repository enabled."
+
+install_pacman_packages
+echo "Pacman packages installed."
+install_yay
+echo "yay installed."
+install_yay_packages
+echo "yay packages installed."
+
+### Install Qt6 (required by jamesdsp)
+# sudo pacman -S --needed qt6-base qt6-tools qt6-declarative
+
+dotfiles_installation
+echo "Dotfiles installed."
+handle_firstboot
+echo "First boot configuration handled."
+echo "Installation complete."
 
 start-hyprland
