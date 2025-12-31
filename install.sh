@@ -85,34 +85,51 @@ git clone $DOTFILES_REPO
 
 
 # TODO: MAKE THIS EXECUTABLE SCRIPT AND PUT IT in exec-once in hyprland.conf also remove it from there when it is finished
-# echo "Configuring wallpapers for each monitor..."
+touch ~/.config/hypr/.firstboot
 
-# MONITORS=$(hyprctl -j get_monitors | jq length)
-# MONITORS=($(hyprctl monitors all | awk '/^Monitor / {gsub(/^Monitor |:$/,""); print $1}'))
-# # modify dotfiles/hypr/hyprpaper.conf to set wallpapers for each monitor
-# echo "Found ${#MONITORS[@]} monitors."
-# for i in "${!MONITORS[@]}"; do
-#     MONITOR_NAME=${MONITORS[$i]}
-#     WALLPAPER_PATH="$HOME/.config/hypr/wallpaper.jpg"
-#     # wallpaper {
-#     #     monitor = eDP-1
-#     #     path = ~/.config/hypr/wallpaper.jpg
-#     #     fit_mode = cover
-#     # }
-#     # rm file if exists
-#     rm -f ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
-#     sed -i "/^wallpaper {/,/^}/ s/^\(\s*monitor = \).*/\1$MONITOR_NAME/" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
-#     sed -i "/^wallpaper {/,/^}/ s#^\(\s*path = \).*#\1 $WALLPAPER_PATH#" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
-#     sed -i "/^wallpaper {/,/^}/ s/^\(\s*fit_mode = \).*/\1cover/" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
+cat > ~/.config/hypr/firstboot.sh << 'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
 
-#     echo "Configured wallpaper for monitor $MONITOR_NAME"
-# done
+echo "Configuring wallpapers for each monitor..."
 
+MONITORS=($(hyprctl monitors all | awk '/^Monitor / {gsub(/^Monitor |:$/,""); print $1}'))
+echo "Found ${#MONITORS[@]} monitors."
+
+for i in "${!MONITORS[@]}"; do
+    MONITOR_NAME=${MONITORS[$i]}
+    WALLPAPER_PATH="$HOME/.config/hypr/wallpaper.jpg"
+    
+    sed -i "/^wallpaper {/,/^}/ s/^\(\s*monitor = \).*/\1$MONITOR_NAME/" ~/.config/hypr/hyprpaper.conf
+    sed -i "/^wallpaper {/,/^}/ s#^\(\s*path = \).*#\1$WALLPAPER_PATH#" ~/.config/hypr/hyprpaper.conf
+    sed -i "/^wallpaper {/,/^}/ s/^\(\s*fit_mode = \).*/\1cover/" ~/.config/hypr/hyprpaper.conf
+    
+    echo "Configured wallpaper for monitor $MONITOR_NAME"
+done
+
+# Remove firstboot marker and this script
+rm -f ~/.config/hypr/.firstboot
+rm -f ~/.config/hypr/firstboot.sh
+
+# Remove exec-once line from hyprland.conf
+sed -i '/^exec-once = ~/.config\/hypr\/firstboot.sh/d' ~/.config/hypr/hyprland.conf
+
+echo "First boot configuration complete."
+EOF
+
+chmod +x ~/.config/hypr/firstboot.sh
+
+# make firstboot exec-once in hyprland.conf
+if ! grep -q "exec-once = ~/.config/hypr/firstboot.sh" ~/.config/hypr/hyprland.conf; then
+    echo "Adding firstboot exec-once to hyprland.conf..."
+    echo "exec-once = ~/.config/hypr/firstboot.sh" >> ~/.config/hypr/hyprland.conf
+    echo "firstboot exec-once added."
+fi
 
 # change the $terminal variable in hyprland.conf to currently configured one
-CURRENT_TERMINAL=$(grep -oP '^\$terminal\s*=\s*\K.*' ~/.config/hypr/hyprland.conf 2>/dev/null || echo "kitty")
-sed -i "s/^\(\$terminal\s*=\s*\).*/\1$CURRENT_TERMINAL/" ~/hyprarch/dotfiles/.config/hypr/hyprland.conf
-echo "Set terminal in hyprland.conf to $CURRENT_TERMINAL"
+# CURRENT_TERMINAL=$(grep -oP '^\$terminal\s*=\s*\K.*' ~/.config/hypr/hyprland.conf 2>/dev/null || echo "kitty")
+# sed -i "s/^\(\$terminal\s*=\s*\).*/\1$CURRENT_TERMINAL/" ~/hyprarch/dotfiles/.config/hypr/hyprland.conf
+# echo "Set terminal in hyprland.conf to $CURRENT_TERMINAL"
 
 # Copy all dotfiles to $HOME/.config
 echo "Copying dotfiles to $HOME/.config..."
