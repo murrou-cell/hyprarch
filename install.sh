@@ -4,7 +4,7 @@ set -euo pipefail
 DOTFILES_REPO="https://github.com/murrou-cell/hyprarch.git"
 
 required_software=(
-    hyprland-git-bin
+    # hyprland-git-bin
     ttf-dejavu
     ttf-font-awesome 
     stow
@@ -39,7 +39,7 @@ sudo pacman -Syu --noconfirm
 # Wayland essentials + terminal
 sudo pacman -S --needed --noconfirm xorg-xwayland mesa libinput \
     wayland-protocols wl-clipboard foot alacritty
-
+sudo pacman -S hyprland --needed --noconfirm
 install_yay() {
     if command -v yay &>/dev/null; then
         echo "yay already installed"
