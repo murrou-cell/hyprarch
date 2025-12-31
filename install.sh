@@ -15,6 +15,7 @@ required_software=(
     hypridle
     blueman
     pavucontrol
+    wofi
     # jamesdsp
 )
 
