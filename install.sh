@@ -55,7 +55,7 @@ install_yay() {
 
 install_yay
 ### Install Qt6 (required by jamesdsp)
-sudo pacman -S --needed qt6-base qt6-tools qt6-declarative
+# sudo pacman -S --needed qt6-base qt6-tools qt6-declarative
 
 
 echo "Installing required software..."
