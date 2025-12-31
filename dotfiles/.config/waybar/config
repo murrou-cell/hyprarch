@@ -106,6 +106,7 @@
         "format-disabled": "\uf294 ",
         "format-off": "\uf293 ",
         "format-on": "\uf293 ",
+        "format-no-controller": "",
         "format-connected": "\uf293  {num_connections}",
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",

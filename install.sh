@@ -5,7 +5,7 @@ DOTFILES_REPO="https://github.com/murrou-cell/hyprarch.git"
 
 required_software_yay=(
     kitty
-    ttf-font-awesome 
+    ttf-jetbrains-mono-nerd
     stow
     hyprpaper
     swaync
@@ -59,19 +59,23 @@ install_yay_packages() {
 }
 
 dotfiles_installation() {
-echo "Cloning dotfiles repository..."
-# if directory exists, remove it first
-if [ -d "$HOME/hyprarch" ]; then
-    rm -rf "$HOME/hyprarch"
-fi
-git clone $DOTFILES_REPO
+    echo "Cloning dotfiles repository..."
 
 
-# Copy all dotfiles to $HOME/.config
-echo "Copying dotfiles to $HOME/.config..."
-mkdir -p "$HOME/.config"
-cp -r ~/hyprarch/dotfiles/.config/* "$HOME/.config/"
-echo "Dotfiles copied."
+    # if directory exists, remove it first
+    if [ -d "$HOME/hyprarch" ]; then
+        rm -rf "$HOME/hyprarch"
+    fi
+    git clone $DOTFILES_REPO
+
+    # make all files owned by user
+    chown -R "$USER":"$USER" "$HOME/hyprarch"
+
+    # Copy all dotfiles to $HOME/.config
+    echo "Copying dotfiles to $HOME/.config..."
+    mkdir -p "$HOME/.config"
+    cp -r ~/hyprarch/dotfiles/.config/* "$HOME/.config/"
+    echo "Dotfiles copied."
 }
 
 handle_firstboot() {
