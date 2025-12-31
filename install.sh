@@ -89,10 +89,10 @@ for i in "${!MONITORS[@]}"; do
     #     fit_mode = cover
     # }
     # rm file if exists
-    rm -f ~/hyprarch/dotfiles/hypr/hyprpaper.conf
-    sed -i "/^wallpaper {/,/^}/ s/^\(\s*monitor = \).*/\1$MONITOR_NAME/" ~/hyprarch/dotfiles/hypr/hyprpaper.conf
-    sed -i "/^wallpaper {/,/^}/ s#^\(\s*path = \).*#\1 $WALLPAPER_PATH#" ~/hyprarch/dotfiles/hypr/hyprpaper.conf
-    sed -i "/^wallpaper {/,/^}/ s/^\(\s*fit_mode = \).*/\1cover/" ~/hyprarch/dotfiles/hypr/hyprpaper.conf
+    rm -f ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
+    sed -i "/^wallpaper {/,/^}/ s/^\(\s*monitor = \).*/\1$MONITOR_NAME/" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
+    sed -i "/^wallpaper {/,/^}/ s#^\(\s*path = \).*#\1 $WALLPAPER_PATH#" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
+    sed -i "/^wallpaper {/,/^}/ s/^\(\s*fit_mode = \).*/\1cover/" ~/hyprarch/dotfiles/.config/hypr/hyprpaper.conf
 
     echo "Configured wallpaper for monitor $MONITOR_NAME"
 done
