@@ -34,18 +34,18 @@ sudo pacman -Syu --noconfirm
 echo "Installing base development packages..."  
 sudo pacman -S --needed --noconfirm base-devel git curl wget go
 echo "Base development packages installed."
+
 # Multilib support
 echo "Enabling multilib repository..."
 sudo sed -i '/^\[multilib\]/,/Include/ s/^#//' /etc/pacman.conf
 sudo pacman -Syu --noconfirm
-
-# Wayland essentials + terminal
-# sudo pacman -S --needed --noconfirm xorg-xwayland mesa libinput \
-#     wayland-protocols wl-clipboard foot alacritty
+echo "Multilib repository enabled."
 
 # DEBUG
 sudo pacman -S --needed --noconfirm foot
-
+#
+# Install Hyprland from official repos
+echo "Installing Hyprland..."
 sudo pacman -S hyprland --needed --noconfirm
 
 install_yay() {
@@ -62,17 +62,18 @@ install_yay() {
 }
 
 install_yay
+echo "yay installed."
+
 ### Install Qt6 (required by jamesdsp)
 # sudo pacman -S --needed qt6-base qt6-tools qt6-declarative
 
 
 echo "Installing required software..."
-oldIFS=$IFS
-IFS=$'\n'
+# oldIFS=$IFS
+# IFS=$'\n'
 for pkg in "${required_software[@]}"; do
     yay -S --needed --noconfirm "$pkg"
 done
-
 echo "All required software installed." 
 
 echo "Cloning dotfiles repository..."
@@ -82,7 +83,9 @@ if [ -d "$HOME/hyprarch" ]; then
 fi
 git clone $DOTFILES_REPO
 
-echo "Configuring wallpapers for each monitor..."
+
+# TODO: MAKE THIS EXECUTABLE SCRIPT AND PUT IT in exec-once in hyprland.conf also remove it from there when it is finished
+# echo "Configuring wallpapers for each monitor..."
 
 # MONITORS=$(hyprctl -j get_monitors | jq length)
 # MONITORS=($(hyprctl monitors all | awk '/^Monitor / {gsub(/^Monitor |:$/,""); print $1}'))
@@ -105,6 +108,7 @@ echo "Configuring wallpapers for each monitor..."
 #     echo "Configured wallpaper for monitor $MONITOR_NAME"
 # done
 
+
 # change the $terminal variable in hyprland.conf to currently configured one
 CURRENT_TERMINAL=$(grep -oP '^\$terminal\s*=\s*\K.*' ~/.config/hypr/hyprland.conf 2>/dev/null || echo "kitty")
 sed -i "s/^\(\$terminal\s*=\s*\).*/\1$CURRENT_TERMINAL/" ~/hyprarch/dotfiles/.config/hypr/hyprland.conf
@@ -115,3 +119,5 @@ echo "Copying dotfiles to $HOME/.config..."
 mkdir -p "$HOME/.config"
 cp -r ~/hyprarch/dotfiles/.config/* "$HOME/.config/"
 echo "Dotfiles copied."
+
+start-hyprarch
