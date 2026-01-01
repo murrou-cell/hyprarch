@@ -61,10 +61,25 @@ echo "📦 Recommended Flatpak apps not installed:"
 printf "  • %s\n" "${missing[@]}"
 echo
 
-read -p "Install them now? [y/N]: " confirm
-if [[ "$confirm" =~ ^[Yy]$ ]]; then
-    flatpak install -y flathub "${missing[@]}"
-    echo "🎉 Installation complete!"
-else
-    echo "ℹ️ Run 'hyprarch-recommended' anytime to install them."
+if [[ ${#missing[@]} -eq 0 ]]; then
+    echo "✅ All recommended Flatpak apps are already installed."
+    exit 0
 fi
+
+echo "📦 Select Flatpak apps to install (TAB to select, ENTER to confirm):"
+
+if ! command -v fzf &>/dev/null; then
+    echo "❌ fzf is not installed."
+    echo "Install it with: sudo pacman -S fzf"
+    exit 1
+fi
+
+selected=($(printf "%s\n" "${missing[@]}" | fzf -m))
+
+if [[ ${#selected[@]} -eq 0 ]]; then
+    echo "ℹ️ No apps selected. Nothing to install."
+    exit 0
+fi
+
+flatpak install -y flathub "${selected[@]}"
+echo "🎉 Selected apps installed!"
