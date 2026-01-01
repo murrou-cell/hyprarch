@@ -10,12 +10,12 @@ mkdir -p "$CACHE_DIR"
 echo "🌐 Fetching recommended Flatpak apps..."
 
 if ! command -v curl &>/dev/null; then
-    echo "❌ curl is required but not installed."
+    echo "curl is required but not installed."
     exit 1
 fi
 
 if ! command -v flatpak &>/dev/null; then
-    echo "❌ Flatpak is not installed."
+    echo "Flatpak is not installed."
     exit 1
 fi
 
@@ -34,7 +34,7 @@ fi
 
 # Ensure Flathub exists
 if ! flatpak remote-list | grep -q flathub; then
-    echo "➕ Adding Flathub remote..."
+    echo "Adding Flathub remote..."
     flatpak remote-add --if-not-exists flathub \
         https://flathub.org/repo/flathub.flatpakrepo
 fi
@@ -52,7 +52,7 @@ for app in "${APPS[@]}"; do
 done
 
 if [[ ${#missing[@]} -eq 0 ]]; then
-    echo "✅ All recommended Flatpak apps are already installed."
+    echo "All recommended Flatpak apps are already installed."
     exit 0
 fi
 
@@ -62,7 +62,7 @@ printf "  • %s\n" "${missing[@]}"
 echo
 
 if [[ ${#missing[@]} -eq 0 ]]; then
-    echo "✅ All recommended Flatpak apps are already installed."
+    echo "All recommended Flatpak apps are already installed."
     exit 0
 fi
 
@@ -74,5 +74,3 @@ selected=$(printf '%s' "$selected" | tr -d '\r\0')
 [[ -z "$selected" ]] && exit 0
 
 flatpak install -y flathub "$selected"
-
-echo "🎉 Selected app installed!"
