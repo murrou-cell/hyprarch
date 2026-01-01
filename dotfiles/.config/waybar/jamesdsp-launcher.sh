@@ -28,3 +28,4 @@ case "$menu" in
         flatpak install -y flathub "$FLATPAK_APP"
         ;;
 esac
+
