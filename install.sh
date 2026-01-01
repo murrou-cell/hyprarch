@@ -117,55 +117,50 @@ dotfiles_installation() {
 }
 
 handle_firstboot() {
+    echo "Creating first boot configuration script..."
 
-echo "Creating first boot configuration script..."
+    mkdir -p ~/.config/hypr
+    touch ~/.config/hypr/.firstboot
 
-touch ~/.config/hypr/.firstboot
-
-cat > ~/.config/hypr/firstboot.sh << 'EOF'
+    cat > ~/.config/hypr/firstboot.sh << 'FIRSTBOOT'
 #!/usr/bin/env bash
 set -euo pipefail
 
 echo "Configuring wallpapers for each monitor..."
-if [[ ! -f "$HOME/.config/hypr/hyprpaper.conf" ]]; then
-    echo "hyprpaper.conf not found, skipping wallpaper setup"
-    exit 0
-fi
-MONITORS=($(hyprctl monitors all | awk '/^Monitor / {gsub(/^Monitor |:$/,""); print $1}'))
-echo "Found ${#MONITORS[@]} monitors."
 
-for i in "${!MONITORS[@]}"; do
-    MONITOR_NAME=${MONITORS[$i]}
-    WALLPAPER_PATH="$HOME/.config/hypr/wallpaper.jpg"
-    
-    sed -i "/^wallpaper {/,/^}/ s/^\(\s*monitor = \).*/\1$MONITOR_NAME/" ~/.config/hypr/hyprpaper.conf
-    sed -i "/^wallpaper {/,/^}/ s#^\(\s*path = \).*#\1$WALLPAPER_PATH#" ~/.config/hypr/hyprpaper.conf
-    sed -i "/^wallpaper {/,/^}/ s/^\(\s*fit_mode = \).*/\1cover/" ~/.config/hypr/hyprpaper.conf
-    
-    echo "Configured wallpaper for monitor $MONITOR_NAME"
+CONF="$HOME/.config/hypr/hyprpaper.conf"
+WALLPAPER="$HOME/.config/hypr/wallpaper.jpg"
+
+[[ -f "$CONF" ]] || exit 0
+
+MONITORS=($(hyprctl monitors all | awk '/^Monitor / {print $2}'))
+
+# Remove existing wallpaper blocks
+sed -i '/^wallpaper {/,/^}/d' "$CONF"
+
+for m in "${MONITORS[@]}"; do
+cat >> "$CONF" << 'WALLPAPER_BLOCK'
+wallpaper {
+    monitor = MONITOR_NAME
+    path = WALLPAPER_PATH
+    fit_mode = cover
+}
+WALLPAPER_BLOCK
+
+sed -i \
+    -e "s/MONITOR_NAME/$m/" \
+    -e "s#WALLPAPER_PATH#$WALLPAPER#" \
+    "$CONF"
 done
 
-# Remove firstboot marker and this script
 rm -f ~/.config/hypr/.firstboot
-rm -f ~/.config/hypr/firstboot.sh
+sed -i "\|firstboot.sh|d" ~/.config/hypr/hyprland.conf
+FIRSTBOOT
 
-# Remove exec-once line from hyprland.conf
-sed -i "\|^exec-once = $HOME/.config/hypr/firstboot.sh|d" \
-    "$HOME/.config/hypr/hyprland.conf"
+    chmod +x ~/.config/hypr/firstboot.sh
 
-
-echo "First boot configuration complete."
-EOF
-
-chmod +x ~/.config/hypr/firstboot.sh
-
-# make firstboot exec-once in hyprland.conf
-if ! grep -q "exec-once = ~/.config/hypr/firstboot.sh" ~/.config/hypr/hyprland.conf; then
-    echo "Adding firstboot exec-once to hyprland.conf..."
-    echo "exec-once = ~/.config/hypr/firstboot.sh > ~/.config/hypr/firstboot.log 2>&1" >> ~/.config/hypr/hyprland.conf
-    echo "firstboot exec-once added."
-fi
-
+    echo 'exec-once = ~/.config/hypr/firstboot.sh > ~/.config/hypr/firstboot.log 2>&1' \
+        >> ~/.config/hypr/hyprland.conf
 }
 
 make_all_shell_files_executable() {
