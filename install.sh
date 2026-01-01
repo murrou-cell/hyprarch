@@ -119,7 +119,6 @@ dotfiles_installation() {
 handle_firstboot() {
     echo "Creating first boot configuration script..."
 
-    mkdir -p ~/.config/hypr
     touch ~/.config/hypr/.firstboot
 
     cat > ~/.config/hypr/firstboot.sh << 'FIRSTBOOT'
