@@ -183,11 +183,11 @@ echo "Sudo verified."
 echo "Updating system..."
 sudo pacman -Syu --noconfirm
 
-# Multilib support
-echo "Enabling multilib repository..."
-sudo sed -i '/^\[multilib\]/,/Include/ s/^#//' /etc/pacman.conf
-sudo pacman -Syu --noconfirm
-echo "Multilib repository enabled."
+# # Multilib support
+# echo "Enabling multilib repository..."
+# sudo sed -i '/^\[multilib\]/,/Include/ s/^#//' /etc/pacman.conf
+# sudo pacman -Syu --noconfirm
+# echo "Multilib repository enabled."
 
 install_pacman_packages
 echo "Pacman packages installed."
