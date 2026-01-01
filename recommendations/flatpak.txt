@@ -2,8 +2,3 @@
 com.stremio.Stremio
 org.videolan.VLC
 
-# Audio
-com.spotify.Client
-
-# Utilities
-com.github.tchx84.Flatseal
