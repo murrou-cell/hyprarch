@@ -70,5 +70,9 @@ selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu -i -p "Select apps to in
 
 [[ -z "$selected" ]] && exit 0
 
-flatpak install -y flathub "$selected"
+# Install each selected app
+while IFS= read -r app; do
+    [[ -n "$app" ]] && flatpak install -y flathub "$app"
+done <<< "$selected"
+
 echo "🎉 Selected apps installed!"
