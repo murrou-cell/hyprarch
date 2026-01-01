@@ -4,7 +4,12 @@ set -euo pipefail
 DOTFILES_REPO="https://github.com/murrou-cell/hyprarch.git"
 
 # prompt for kitty or foot terminal
-read -p "Which terminal do you want to install? (kitty/foot): " TERMINAL_CHOICE
+if [ -t 0 ]; then
+    read -p "Which terminal do you want to install? (kitty/foot): " TERMINAL_CHOICE
+else
+    TERMINAL_CHOICE="${TERMINAL_CHOICE:-kitty}"
+    echo "Non-interactive mode detected. Using terminal: $TERMINAL_CHOICE"
+fi
 if [[ "$TERMINAL_CHOICE" != "kitty" && "$TERMINAL_CHOICE" != "foot" ]]; then
     echo "Invalid choice. Please choose either 'kitty' or 'foot'."
     exit 1
