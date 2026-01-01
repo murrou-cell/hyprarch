@@ -30,6 +30,7 @@ required_software_yay=(
     pavucontrol
     wofi
     vim
+    firefox
 )
 
 required_software_pacman=(
@@ -170,6 +171,14 @@ make_all_shell_files_executable() {
 }
 
 
+configure_firefox_policies() {
+    echo "Configuring Firefox policies..."
+    FIREFOX_POLICIES_DIR="/usr/lib/firefox/distribution"
+    mkdir -p "$FIREFOX_POLICIES_DIR"
+    cp ~/hyprarch/firefox/policies.json "$FIREFOX_POLICIES_DIR/"
+    echo "Firefox policies configured."
+}
+
 IFS=$'\n\t'
 
 echo "Starting installation..."
@@ -196,7 +205,6 @@ echo "yay installed."
 install_yay_packages
 echo "yay packages installed."
 
-
 dotfiles_installation
 echo "Dotfiles installed."
 handle_firstboot
@@ -207,6 +215,10 @@ echo "Terminal set in hyprland.conf."
 
 make_all_shell_files_executable
 echo "All shell files made executable."
+
+echo "Configuring Firefox policies..."
+configure_firefox_policies
+echo "Firefox policies configured."
 
 echo "Installation complete."
 
