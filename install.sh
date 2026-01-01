@@ -132,7 +132,8 @@ WALLPAPER="$HOME/.config/hypr/wallpaper.jpg"
 
 [[ -f "$CONF" ]] || exit 0
 
-MONITORS=($(hyprctl monitors all | awk '/^Monitor / {print $2}'))
+MONITORS=($(hyprctl monitors all | awk '/^Monitor / {gsub(/^Monitor |:$/,""); print $1}'))
+echo "Found ${#MONITORS[@]} monitors."
 
 # Remove existing wallpaper blocks
 sed -i '/^wallpaper {/,/^}/d' "$CONF"
