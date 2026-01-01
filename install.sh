@@ -57,6 +57,11 @@ set_terminal_in_hyprland_conf() {
 install_pacman_packages() {
     echo "Installing required pacman packages..."
     for pkg in "${required_software_pacman[@]}"; do
+        # check if package is already installed
+        if pacman -Qq "$pkg" &>/dev/null; then
+            echo "$pkg is already installed, skipping."
+            continue
+        fi
         sudo pacman -S --needed --noconfirm "$pkg"
     done
     echo "All required pacman packages installed."
@@ -77,7 +82,13 @@ install_yay() {
 
 install_yay_packages() {
     echo "Installing required yay packages..."
+
     for pkg in "${required_software_yay[@]}"; do
+        # check if package is already installed
+        if yay -Qq "$pkg" &>/dev/null; then
+            echo "$pkg is already installed, skipping."
+            continue
+        fi
         yay -S --needed --noconfirm "$pkg"
     done
     echo "All required yay packages installed."
