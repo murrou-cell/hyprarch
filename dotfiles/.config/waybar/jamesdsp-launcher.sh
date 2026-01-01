@@ -21,7 +21,7 @@ case "$menu" in
         for term in foot kitty; do
             if command -v "$term" >/dev/null 2>&1; then
                 if command -v yay >/dev/null 2>&1; then
-                    exec "$term" -e yay -S --noconfirm jamesdsp
+                    exec "$term" -e sh -c "yay -S --noconfirm jamesdsp; echo 'Press Enter to close...'; read"
                 else
                     notify-send "JamesDSP" "yay is not installed"
                 fi
@@ -36,7 +36,7 @@ case "$menu" in
                     notify-send "JamesDSP" "Flatpak is not installed"
                     break
                 fi
-                exec "$term" -e flatpak install -y flathub "$FLATPAK_APP"
+                exec "$term" -e sh -c "flatpak install -y flathub '$FLATPAK_APP'; echo 'Press Enter to close...'; read"
                 break
             fi
         done
