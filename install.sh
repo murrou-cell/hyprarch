@@ -152,6 +152,15 @@ EOF
     fi
 }
 
+add_alias_for_hyprland_recommended() {
+    ALIAS_KEY="recommended"
+    if ! grep -q "alias $ALIAS_KEY" "$HOME/.bashrc"; then
+        echo "Adding alias for installing recommended Flatpak apps to .bashrc..."
+        echo "alias $ALIAS_KEY='bash ~/.config/hypr/hyprarch-recommended.sh'" >> "$HOME/.bashrc"
+        echo "Alias added."
+    fi
+}
+
 IFS=$'\n\t'
 
 echo "Starting installation..."
