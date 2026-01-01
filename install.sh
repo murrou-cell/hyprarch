@@ -31,6 +31,7 @@ required_software_yay=(
     wofi
     vim
     firefox
+    dolphin
 )
 
 required_software_pacman=(
