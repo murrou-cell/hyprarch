@@ -41,7 +41,6 @@ required_software_pacman=(
     go
     foot
     flatpak
-    fzf
 )
 
 set_terminal_in_hyprland_conf() {
