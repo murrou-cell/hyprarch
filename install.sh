@@ -47,30 +47,6 @@ required_software_pacman=(
     flatpak
 )
 
-configure_gtk_dark_theme() {
-    echo "Configuring GTK dark theme..."
-
-    mkdir -p ~/.config/gtk-3.0 ~/.config/gtk-4.0
-
-    cat > ~/.config/gtk-3.0/settings.ini << 'EOF'
-[Settings]
-gtk-theme-name=Adwaita-dark
-gtk-icon-theme-name=Papirus-Dark
-gtk-font-name=JetBrainsMono Nerd Font 11
-gtk-application-prefer-dark-theme=1
-EOF
-
-    cat > ~/.config/gtk-4.0/settings.ini << 'EOF'
-[Settings]
-gtk-theme-name=Adwaita-dark
-gtk-icon-theme-name=Papirus-Dark
-gtk-font-name=JetBrainsMono Nerd Font 11
-gtk-application-prefer-dark-theme=1
-EOF
-
-    echo "GTK dark theme configured."
-}
-
 set_terminal_in_hyprland_conf() {
     echo "Setting terminal to $1 in hyprland.conf..."
     local terminal="$1"
@@ -261,8 +237,6 @@ configure_firefox_policies
 echo "Firefox policies configured."
 
 set_hyprland_autostart_prompt
-
-configure_gtk_dark_theme
 
 echo "Installation complete."
 
