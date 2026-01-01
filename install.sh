@@ -95,16 +95,13 @@ install_yay_packages() {
 }
 
 dotfiles_installation() {
-    echo "Cloning and installing dotfiles..."
-    git clone $DOTFILES_REPO ~/hyprarch
-
     echo "Cloning dotfiles repository..."
 
     # if directory exists, remove it first
     if [ -d "$HOME/hyprarch" ]; then
         rm -rf "$HOME/hyprarch"
     fi
-    git clone $DOTFILES_REPO
+    git clone $DOTFILES_REPO ~/hyprarch
 
     # make all files owned by user
     chown -R "$USER":"$USER" "$HOME/hyprarch"
