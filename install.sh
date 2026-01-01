@@ -155,6 +155,11 @@ fi
 
 }
 
+make_all_shell_files_executable() {
+    find "$HOME/.config" -type f -name "*.sh" -exec chmod +x {} \;
+}
+
+
 IFS=$'\n\t'
 
 echo "Starting installation..."
@@ -189,6 +194,9 @@ echo "First boot configuration handled."
 
 set_terminal_in_hyprland_conf "$TERMINAL_CHOICE"
 echo "Terminal set in hyprland.conf."
+
+make_all_shell_files_executable
+echo "All shell files made executable."
 
 echo "Installation complete."
 
