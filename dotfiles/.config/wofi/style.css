@@ -40,7 +40,7 @@
   /* The name of all the text in entries */
 }
 #window #outer-box #scroll #inner-box #entry #img {
-  width: 1rem;
+  /* width: 1rem; FIX WARNING */
   margin-right: 0.5rem;
 }
 #window #outer-box #scroll #inner-box #entry:selected {
