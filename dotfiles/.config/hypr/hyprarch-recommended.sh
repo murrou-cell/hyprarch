@@ -66,10 +66,13 @@ if [[ ${#missing[@]} -eq 0 ]]; then
     exit 0
 fi
 
-selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu -i -p "Select apps to install")
-echo $selected
+selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu -i --multi-select -p "Select apps to install")
+
 [[ -z "$selected" ]] && exit 0
 
-echo $selected
-flatpak install -y flathub "$selected"
+# Convert newline-separated output into an array
+mapfile -t selected_apps <<< "$selected"
+
+flatpak install -y flathub "${selected_apps[@]}"
+
 echo "🎉 Selected apps installed!"
