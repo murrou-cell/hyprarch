@@ -54,6 +54,7 @@ set_terminal_in_hyprland_conf() {
     else
         echo "\$terminal = $terminal" >> "$hyprland_conf"
     fi
+    echo "Terminal set in hyprland.conf."
 }
 
 install_pacman_packages() {
@@ -81,6 +82,7 @@ install_yay() {
     cd yay
     makepkg -si --noconfirm
     hash -r
+    echo "yay installed."
 }
 
 install_yay_packages() {
@@ -121,10 +123,14 @@ handle_firstboot() {
 
     echo 'exec-once = ~/.config/hypr/firstboot.sh > ~/firstboot.log 2>&1' \
         >> ~/.config/hypr/hyprland.conf
+    
+    echo "Firstboot script added."
 }
 
 make_all_shell_files_executable() {
+    echo "Making all .sh files in .config executable..."
     find "$HOME/.config" -type f -name "*.sh" -exec chmod +x {} \;
+    echo "All .sh files in .config made executable."
 }
 
 
@@ -174,28 +180,20 @@ sudo -v
 echo "Setup verified."
 
 install_pacman_packages
-echo "Pacman packages installed."
 
 install_yay
-echo "yay installed."
 
 install_yay_packages
-echo "yay packages installed."
 
 dotfiles_installation
-echo "Dotfiles installed."
 
 handle_firstboot
-echo "First boot configuration handled."
 
 set_terminal_in_hyprland_conf "$TERMINAL_CHOICE"
-echo "Terminal set in hyprland.conf."
 
 make_all_shell_files_executable
-echo "All shell files made executable."
 
 configure_firefox_policies
-echo "Firefox policies configured."
 
 set_hyprland_autostart_prompt
 

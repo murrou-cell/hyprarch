@@ -74,7 +74,21 @@ if ! command -v fzf &>/dev/null; then
     exit 1
 fi
 
-selected=($(printf "%s\n" "${missing[@]}" | fzf -m))
+selected=()
+
+echo
+echo "Select apps to install (enter numbers, '0' to finish):"
+
+select app in "${missing[@]}"; do
+    if [[ -z "$app" ]]; then
+        echo "Invalid selection"
+        continue
+    fi
+
+    selected+=("$app")
+    echo "Added: $app"
+    echo "Select another or press Ctrl+D to finish"
+done
 
 if [[ ${#selected[@]} -eq 0 ]]; then
     echo "ℹ️ No apps selected. Nothing to install."

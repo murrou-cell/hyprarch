@@ -29,5 +29,4 @@ sed -i \
     "$CONF"
 done
 
-rm -f ~/.config/hypr/.firstboot
 sed -i "\|firstboot.sh|d" ~/.config/hypr/hyprland.conf
