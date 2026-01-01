@@ -74,26 +74,9 @@ if ! command -v fzf &>/dev/null; then
     exit 1
 fi
 
-selected=()
+selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu --multi-select)
 
-echo
-echo "Select apps to install (enter numbers, '0' to finish):"
+[[ -z "$selected" ]] && exit 0
 
-select app in "${missing[@]}"; do
-    if [[ -z "$app" ]]; then
-        echo "Invalid selection"
-        continue
-    fi
-
-    selected+=("$app")
-    echo "Added: $app"
-    echo "Select another or press Ctrl+D to finish"
-done
-
-if [[ ${#selected[@]} -eq 0 ]]; then
-    echo "ℹ️ No apps selected. Nothing to install."
-    exit 0
-fi
-
-flatpak install -y flathub "${selected[@]}"
+flatpak install -y flathub $selected
 echo "🎉 Selected apps installed!"
