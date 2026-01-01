@@ -68,15 +68,13 @@ fi
 
 echo "📦 Select Flatpak apps to install (TAB to select, ENTER to confirm):"
 
-if ! command -v fzf &>/dev/null; then
-    echo "❌ fzf is not installed."
-    echo "Install it with: sudo pacman -S fzf"
-    exit 1
-fi
 
-selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu --multi-select)
+selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu --multi-select -p "Select apps to install")
 
 [[ -z "$selected" ]] && exit 0
 
-flatpak install -y flathub $selected
+# Install each app individually to avoid naming issues
+while IFS= read -r app; do
+    [[ -n "$app" ]] && flatpak install -y flathub "$app"
+done <<< "$selected"
 echo "🎉 Selected apps installed!"
