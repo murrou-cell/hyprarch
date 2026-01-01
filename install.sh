@@ -184,7 +184,16 @@ configure_firefox_policies() {
 set_hyprland_autostart_prompt() {
     if ! grep -q "exec start-hyprland" "$HOME/.bash_profile"; then
         echo "Adding start-hyprland to .bash_profile..."
-        echo -e "\n# Start Hyprland on login\nif [[ \$(tty) == /dev/tty1 ]]; then\n    exec start-hyprland\nfi" >> "$HOME/.bash_profile"
+        cat >> "$HOME/.bash_profile" << 'EOF'
+
+# Start Hyprland on login
+if [[ $(tty) == /dev/tty1 ]]; then
+    read -p "Start Hyprland? [y/N]: " start_hypr
+    if [[ "$start_hypr" =~ ^[Yy]$ ]]; then
+    exec start-hyprland
+    fi
+fi
+EOF
         echo "start-hyprland added to .bash_profile."
     fi
 }
