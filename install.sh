@@ -174,8 +174,8 @@ make_all_shell_files_executable() {
 configure_firefox_policies() {
     echo "Configuring Firefox policies..."
     FIREFOX_POLICIES_DIR="/usr/lib/firefox/distribution"
-    mkdir -p "$FIREFOX_POLICIES_DIR"
-    cp ~/hyprarch/firefox/policies.json "$FIREFOX_POLICIES_DIR/"
+    sudo mkdir -p "$FIREFOX_POLICIES_DIR"
+    sudo cp ~/hyprarch/firefox/policies.json "$FIREFOX_POLICIES_DIR/"
     echo "Firefox policies configured."
 }
 
