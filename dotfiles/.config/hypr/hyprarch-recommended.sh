@@ -66,11 +66,7 @@ if [[ ${#missing[@]} -eq 0 ]]; then
     exit 0
 fi
 
-echo "📦 Select Flatpak apps to install (TAB to select, ENTER to confirm):"
-
-
-selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu --multi-select -p "Select apps to install")
-
+selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu -i -p "Select apps to install")
 
 [[ -z "$selected" ]] && exit 0
 
