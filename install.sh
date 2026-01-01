@@ -199,6 +199,8 @@ echo "Firefox policies configured."
 
 set_hyprland_autostart_prompt
 
+add_alias_for_hyprland_recommended
+
 echo "Installation complete."
 
 start-hyprland
