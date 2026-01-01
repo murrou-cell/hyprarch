@@ -95,8 +95,10 @@ install_yay_packages() {
 }
 
 dotfiles_installation() {
-    echo "Cloning dotfiles repository..."
+    echo "Cloning and installing dotfiles..."
+    git clone $DOTFILES_REPO ~/hyprarch
 
+    echo "Cloning dotfiles repository..."
 
     # if directory exists, remove it first
     if [ -d "$HOME/hyprarch" ]; then
