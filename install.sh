@@ -24,6 +24,7 @@ required_software_yay=(
     waybar
     hyprlock
     hypridle
+    hyprshot
     blueman
     pavucontrol
     wofi
