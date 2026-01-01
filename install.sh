@@ -45,6 +45,7 @@ required_software_pacman=(
 )
 
 set_terminal_in_hyprland_conf() {
+    echo "Setting terminal to $1 in hyprland.conf..."
     local terminal="$1"
     local hyprland_conf="$HOME/.config/hypr/hyprland.conf"
 
@@ -69,6 +70,7 @@ install_pacman_packages() {
 }
 
 install_yay() {
+    echo "Installing yay AUR helper..."
     if command -v yay &>/dev/null; then
         echo "yay already installed"
         return
@@ -179,34 +181,38 @@ configure_firefox_policies() {
     echo "Firefox policies configured."
 }
 
+set_hyprland_autostart_prompt() {
+    if ! grep -q "exec start-hyprland" "$HOME/.bash_profile"; then
+        echo "Adding start-hyprland to .bash_profile..."
+        echo -e "\n# Start Hyprland on login\nif [[ \$(tty) == /dev/tty1 ]]; then\n    exec start-hyprland\nfi" >> "$HOME/.bash_profile"
+        echo "start-hyprland added to .bash_profile."
+    fi
+}
+
 IFS=$'\n\t'
 
 echo "Starting installation..."
-# Ensure sudo exists
+# Ensure sudo exists and refresh credentials
 if ! command -v sudo &>/dev/null; then
     pacman -Sy --noconfirm sudo
 fi
+# Refresh sudo timestamp to avoid mid-installation prompts
 sudo -v
-echo "Sudo verified."   
-# Update system
-echo "Updating system..."
-sudo pacman -Syu --noconfirm
+echo "Setup verified."
 
-# # Multilib support
-# echo "Enabling multilib repository..."
-# sudo sed -i '/^\[multilib\]/,/Include/ s/^#//' /etc/pacman.conf
-# sudo pacman -Syu --noconfirm
-# echo "Multilib repository enabled."
-
+echo
 install_pacman_packages
 echo "Pacman packages installed."
+
 install_yay
 echo "yay installed."
+
 install_yay_packages
 echo "yay packages installed."
 
 dotfiles_installation
 echo "Dotfiles installed."
+
 handle_firstboot
 echo "First boot configuration handled."
 
@@ -216,9 +222,10 @@ echo "Terminal set in hyprland.conf."
 make_all_shell_files_executable
 echo "All shell files made executable."
 
-echo "Configuring Firefox policies..."
 configure_firefox_policies
 echo "Firefox policies configured."
+
+set_hyprland_autostart_prompt
 
 echo "Installation complete."
 
