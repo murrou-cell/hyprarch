@@ -19,7 +19,6 @@ fi
 required_software_yay=(
     kitty
     ttf-jetbrains-mono-nerd
-    stow
     hyprpaper
     swaync
     waybar
