@@ -3,6 +3,8 @@ set -euo pipefail
 
 DOTFILES_REPO="https://github.com/murrou-cell/hyprarch.git"
 
+
+# TERMINAL_CHOICE=foot https://raw.githubusercontent.com/murrou-cell/hyprarch/main/install.sh | bash
 # prompt for kitty or foot terminal
 if [ -t 0 ]; then
     read -p "Which terminal do you want to install? (kitty/foot): " TERMINAL_CHOICE

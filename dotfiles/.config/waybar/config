@@ -116,7 +116,9 @@
     "custom/jamesDSP": {
         "format": " ",
         "tooltip-format": "JamesDSP",
-        "on-click": "jamesdsp"
+        "exec": "~/.config/waybar/jamesdsp-status.sh",
+        "interval": 10,
+        "on-click": "~/.config/waybar/jamesdsp-launcher.sh"
     },
     "hyprland/language": {
         "format": "{short}",
