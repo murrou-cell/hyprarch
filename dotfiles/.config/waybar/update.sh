@@ -3,9 +3,16 @@
 # Get terminal configured in hyprland
 TERMINAL=$(grep -oP '^\$terminal\s*=\s*\K.*' ~/.config/hypr/hyprland.conf 2>/dev/null || echo "kitty")
 
+# Set terminal-specific flags
+if [[ "$TERMINAL" == "foot" ]]; then
+    TERM_CMD="$TERMINAL"
+else
+    TERM_CMD="$TERMINAL --detach"
+fi
+
 if [[ ! -x /usr/bin/checkupdates ]]; then
     # Install pacman-contrib if missing
-    "$TERMINAL" --detach -e sh -c '
+    $TERM_CMD -e sh -c '
         echo "pacman-contrib not found. Installing..."
         sudo pacman -S --noconfirm pacman-contrib
         echo "Done. Press Enter to exit."
@@ -13,7 +20,7 @@ if [[ ! -x /usr/bin/checkupdates ]]; then
     '
 else
     # Run full system upgrade
-    "$TERMINAL" --detach -e sh -c '
+    $TERM_CMD -e sh -c '
         echo "Starting full system upgrade..."
         sudo pacman -Syu
         echo "Done. Press Enter to exit."
