@@ -23,7 +23,6 @@ required_software_yay=(
     pavucontrol
     wofi
     vim
-    # jamesdsp
 )
 
 required_software_pacman=(
@@ -33,7 +32,8 @@ required_software_pacman=(
     wget
     base-devel
     go
-    foot # DEBUG
+    foot
+    flatpak
 )
 
 set_terminal_in_hyprland_conf() {
@@ -97,7 +97,7 @@ dotfiles_installation() {
 }
 
 handle_firstboot() {
-    
+
 echo "Creating first boot configuration script..."
 
 touch ~/.config/hypr/.firstboot
@@ -174,8 +174,6 @@ echo "yay installed."
 install_yay_packages
 echo "yay packages installed."
 
-### Install Qt6 (required by jamesdsp)
-# sudo pacman -S --needed qt6-base qt6-tools qt6-declarative
 
 dotfiles_installation
 echo "Dotfiles installed."
