@@ -71,10 +71,13 @@ echo "📦 Select Flatpak apps to install (TAB to select, ENTER to confirm):"
 
 selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu --multi-select -p "Select apps to install")
 
+echo "Selected apps: $selected"
+
 [[ -z "$selected" ]] && exit 0
 
-# Install each app individually to avoid naming issues
-while IFS= read -r app; do
-    [[ -n "$app" ]] && flatpak install -y flathub "$app"
-done <<< "$selected"
+echo "Selected apps:"
+printf "  • %s\n" $selected
+echo
+
+flatpak install -y flathub $selected
 echo "🎉 Selected apps installed!"
