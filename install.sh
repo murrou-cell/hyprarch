@@ -30,10 +30,7 @@ required_software_yay=(
     wofi
     vim
     firefox
-    # file explorer
-    nautilus
-    papirus-icon-theme
-    gnome-themes-extra
+    dolphin
 )
 
 required_software_pacman=(
