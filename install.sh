@@ -200,7 +200,6 @@ fi
 sudo -v
 echo "Setup verified."
 
-echo
 install_pacman_packages
 echo "Pacman packages installed."
 
