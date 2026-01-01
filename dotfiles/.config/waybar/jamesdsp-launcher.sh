@@ -18,14 +18,28 @@ menu=$(printf "Install (yay)\nInstall (Flatpak)\nCancel" | \
 
 case "$menu" in
     "Install (yay)")
-        if command -v yay >/dev/null 2>&1; then
-            yay -S --noconfirm jamesdsp
-        else
-            notify-send "JamesDSP" "yay is not installed"
-        fi
+        for term in foot kitty; do
+            if command -v "$term" >/dev/null 2>&1; then
+                if command -v yay >/dev/null 2>&1; then
+                    exec "$term" -e yay -S --noconfirm jamesdsp
+                else
+                    notify-send "JamesDSP" "yay is not installed"
+                fi
+                break
+            fi
+        done
         ;;
     "Install (Flatpak)")
-        flatpak install -y flathub "$FLATPAK_APP"
+        for term in foot kitty; do
+            if command -v "$term" >/dev/null 2>&1; then
+                if ! command -v flatpak >/dev/null 2>&1; then
+                    notify-send "JamesDSP" "Flatpak is not installed"
+                    break
+                fi
+                exec "$term" -e flatpak install -y flathub "$FLATPAK_APP"
+                break
+            fi
+        done
         ;;
 esac
 
