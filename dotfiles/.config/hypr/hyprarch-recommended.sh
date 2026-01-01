@@ -67,12 +67,9 @@ if [[ ${#missing[@]} -eq 0 ]]; then
 fi
 
 selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu -i -p "Select apps to install")
-
+echo $selected
 [[ -z "$selected" ]] && exit 0
 
-# Install each selected app
-while IFS= read -r app; do
-    [[ -n "$app" ]] && flatpak install -y flathub "$app"
-done <<< "$selected"
-
+echo $selected
+flatpak install -y flathub "$selected"
 echo "🎉 Selected apps installed!"
