@@ -14,7 +14,7 @@ if flatpak list | grep -q "$FLATPAK_APP"; then
 fi
 
 menu=$(printf "Install (yay)\nInstall (Flatpak)\nCancel" | \
-    rofi -dmenu -p "JamesDSP not installed")
+    wofi -dmenu -i -p "JamesDSP not installed")
 
 case "$menu" in
     "Install (yay)")
