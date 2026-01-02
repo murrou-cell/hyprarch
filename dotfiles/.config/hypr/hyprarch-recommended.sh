@@ -2,12 +2,6 @@
 set -euo pipefail
 
 RECOMMENDED_URL="https://raw.githubusercontent.com/murrou-cell/hyprarch/main/recommendations/flatpak.txt"
-CACHE_DIR="$HOME/.cache/hyprarch"
-CACHE_FILE="$CACHE_DIR/flatpak.txt"
-
-mkdir -p "$CACHE_DIR"
-
-echo "🌐 Fetching recommended Flatpak apps..."
 
 if ! command -v curl &>/dev/null; then
     echo "curl is required but not installed."
@@ -19,35 +13,32 @@ if ! command -v flatpak &>/dev/null; then
     exit 1
 fi
 
-# Fetch list (with fallback to cache)
-if ! curl -fsSL "$RECOMMENDED_URL" -o "$CACHE_FILE.tmp"; then
-    echo "⚠️ Failed to fetch list from GitHub."
-    if [[ -f "$CACHE_FILE" ]]; then
-        echo "Using cached recommendations."
-    else
-        echo "No cached list available."
-        exit 1
-    fi
-else
-    mv "$CACHE_FILE.tmp" "$CACHE_FILE"
-fi
-
-# Ensure Flathub exists
-if ! flatpak remote-list | grep -q flathub; then
-    echo "Adding Flathub remote..."
-    flatpak remote-add --if-not-exists flathub \
-        https://flathub.org/repo/flathub.flatpakrepo
-fi
-
-mapfile -t APPS < <(
-    grep -Ev '^\s*#|^\s*$' "$CACHE_FILE"
-)
+echo "Fetching recommended Flatpak apps..."
+mapfile -t APPS < <(curl -sSL "$RECOMMENDED_URL")
 
 missing=()
 
+# Get list of installed Flatpak app IDs, trimming whitespace and special characters
+mapfile -t INSTALLED < <(flatpak list --app --columns=application)
+
+# Trim whitespace and remove carriage returns from app IDs and check installation
 for app in "${APPS[@]}"; do
-    if ! flatpak info "$app" &>/dev/null; then
-        missing+=("$app")
+    clean_app="$(echo "$app" | xargs)"  # Trim extra spaces
+    if [[ -z "$clean_app" ]]; then
+        continue
+    fi
+
+    # Remove any carriage returns or extra newlines
+    clean_app=$(echo "$clean_app" | tr -d '\r')
+
+    # Clean the INSTALLED apps for comparison, removing any carriage returns and newlines
+    clean_installed=($(printf "%s\n" "${INSTALLED[@]}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | tr -d '\r'))
+
+    if printf '%s\n' "${clean_installed[@]}" | grep -Fxq "$clean_app"; then
+        echo "Checking for $clean_app... installed."
+    else
+        echo "Checking for $clean_app... not installed."
+        missing+=("$clean_app")
     fi
 done
 
@@ -61,11 +52,7 @@ echo "📦 Recommended Flatpak apps not installed:"
 printf "  • %s\n" "${missing[@]}"
 echo
 
-if [[ ${#missing[@]} -eq 0 ]]; then
-    echo "All recommended Flatpak apps are already installed."
-    exit 0
-fi
-
+# Prompt user to select which apps to install
 selected=$(printf "%s\n" "${missing[@]}" | wofi --dmenu -i -p "Select apps to install")
 
 # Remove hidden control characters
