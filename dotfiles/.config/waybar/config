@@ -85,8 +85,8 @@
     },
     "pulseaudio": {
         "format": "{icon} ",
-        "format-bluetooth": "{icon} ",
-        "format-muted": " ",
+        "format-bluetooth": "{icon}",
+        "format-muted": "",
         "format-icons": {
             "headphones": "",
             "handsfree": "",
@@ -96,7 +96,7 @@
             "car": "",
             "default": [
                 "",
-                ""
+                " "
             ]
         },
         "on-click": "pavucontrol"
