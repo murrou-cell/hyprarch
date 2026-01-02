@@ -31,6 +31,7 @@ required_software_yay=(
     vim
     firefox
     dolphin
+    visual-studio-code-bin
 )
 
 required_software_pacman=(
@@ -42,7 +43,7 @@ required_software_pacman=(
     go
     foot
     flatpak
-    visual-studio-code-bin
+   
 )
 
 set_terminal_in_hyprland_conf() {
