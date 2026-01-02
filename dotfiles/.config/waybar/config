@@ -77,16 +77,16 @@
         ]
     },
     "network": {
-        "format-wifi": "",
+        "format-wifi": " ",
         "tooltip-format-wifi": "{essid} ({signalStrength}%)",
-        "format-ethernet": "",
-        "format-disconnected": "⚠",
-        "on-click": "/home/murrou/.config/waybar/wifimenu.sh"
+        "format-ethernet": " ",
+        "format-disconnected": "⚠ ",
+        "on-click": "~/.config/waybar/wifimenu.sh"
     },
     "pulseaudio": {
-        "format": "{icon}",
-        "format-bluetooth": "{icon}",
-        "format-muted": "",
+        "format": "{icon} ",
+        "format-bluetooth": "{icon} ",
+        "format-muted": " ",
         "format-icons": {
             "headphones": "",
             "handsfree": "",
@@ -102,12 +102,12 @@
         "on-click": "pavucontrol"
     },
     "bluetooth": {
-        "format": "\uf293 {status}",
+        "format": "\uf293 {status} ",
         "format-disabled": "\uf294 ",
         "format-off": "\uf293 ",
         "format-on": "\uf293 ",
         "format-no-controller": " ",
-        "format-connected": "\uf293  {num_connections}",
+        "format-connected": "\uf293  {num_connections} ",
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
