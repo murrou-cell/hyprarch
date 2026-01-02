@@ -1,2 +1,3 @@
 com.stremio.Stremio
 org.videolan.VLC
+com.viber.Viber
