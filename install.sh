@@ -19,6 +19,7 @@ fi
 required_software_yay=(
     kitty
     ttf-jetbrains-mono-nerd
+    ttf-joypixels
     hyprpaper
     swaync
     waybar
