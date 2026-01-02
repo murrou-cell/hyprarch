@@ -20,6 +20,8 @@ required_software_yay=(
     kitty
     ttf-jetbrains-mono-nerd
     ttf-joypixels
+    ttf-font-awesome 
+    otf-font-awesome
     hyprpaper
     swaync
     waybar
@@ -43,8 +45,7 @@ required_software_pacman=(
     base-devel
     go
     foot
-    flatpak
-   
+    flatpak   
 )
 
 set_terminal_in_hyprland_conf() {
