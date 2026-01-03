@@ -45,7 +45,8 @@ required_software_pacman=(
     base-devel
     go
     foot
-    flatpak   
+    flatpak
+    fuse # for running .AppImage files
 )
 
 set_terminal_in_hyprland_conf() {
