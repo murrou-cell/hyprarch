@@ -47,6 +47,7 @@ required_software_pacman=(
     foot
     flatpak
     fuse # for running .AppImage files
+    brightnessctl
 )
 
 set_terminal_in_hyprland_conf() {
