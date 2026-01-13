@@ -35,6 +35,7 @@ required_software_yay=(
     firefox
     dolphin
     visual-studio-code-bin
+    solaar-git # for Logitech device management
 )
 
 required_software_pacman=(
