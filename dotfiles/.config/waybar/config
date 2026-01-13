@@ -29,7 +29,7 @@
             "firefox": "\uf269"
         },
         "status-icons": {
-            "paused": "⏸"
+            "paused": ""
         }
     },
     "custom/arch-updates": {
