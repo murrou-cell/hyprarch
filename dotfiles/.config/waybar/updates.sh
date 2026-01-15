@@ -10,7 +10,7 @@ fi
 UPDATES=$($CHECKUPDATES 2>/dev/null | wc -l)
 
 if [[ "$UPDATES" -gt 0 ]]; then
-    echo "{\"text\": \"\uf0ed $UPDATES updates\", \"tooltip\": \"$UPDATES package(s) pending update\", \"class\": \"updates\"}"
+    echo "{\"text\": \"\uf0ed \", \"tooltip\": \"$UPDATES package(s) pending update\", \"class\": \"updates\"}"
 else
     echo '{"text":"\uf00c","tooltip":"No updates","class":"updates"}'
 fi
