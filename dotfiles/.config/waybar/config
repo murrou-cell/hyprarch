@@ -4,11 +4,11 @@
     "height": 24, // Waybar height
     //"width": 1366, // Waybar width
     "modules-left": [
-        "custom/arch-updates",
-        "tray"
+        "custom/arch-updates"
     ],
     "modules-center": [
-        "hyprland/workspaces"
+        "hyprland/workspaces",
+        "tray"
     ],
     "modules-right": [
         "mpris",
@@ -53,7 +53,7 @@
         "format": "<span style=\"italic\">{}</span>"
     },
     "tray": {
-        "icon-size": 5,
+        "icon-size": 16,
         "spacing": 10
     },
     "clock": {
@@ -84,7 +84,7 @@
         "on-click": "~/.config/waybar/wifimenu.sh"
     },
     "pulseaudio": {
-        "format": "{icon} ",
+        "format": "{icon}",
         "format-bluetooth": "{icon}",
         "format-muted": "",
         "format-icons": {
