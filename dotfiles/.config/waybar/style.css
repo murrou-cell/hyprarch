@@ -137,3 +137,10 @@ menuitem {
 #custom-jamesDSP tooltip {
   font-size: 12px;
 } */
+
+
+#custom-weather.alert-yellow { color: #f1c40f; }
+#custom-weather.alert-orange { color: #e67e22; }
+#custom-weather.alert-red    { color: #e74c3c; }
+
+#custom-weather.ok { color: #aaffaa; }

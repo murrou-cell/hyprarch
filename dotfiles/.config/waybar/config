@@ -7,6 +7,7 @@
         "custom/arch-updates"
     ],
     "modules-center": [
+        "custom/weather",
         "hyprland/workspaces",
         "tray"
     ],
@@ -129,5 +130,15 @@
             "us": "hyprctl switchxkblayout at-translated-set-2-keyboard 0",
             "bg": "hyprctl switchxkblayout at-translated-set-2-keyboard 1"
         }
+    },
+    "custom/weather": {
+        "exec": "~/.config/waybar/weather.sh",
+        "interval": 600,
+        "return-type": "json",
+        "on-click": "~/.config/waybar/weather.sh",
+        "restart-interval": 1,
+        "signal": 8,
+        "on-click-right": "~/.config/waybar/weather-click.sh",
+        "on-click-middle": "xdg-open https://www.meteo.bg/bg/meteoNow"
     }
 }

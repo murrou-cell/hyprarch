@@ -36,6 +36,7 @@ required_software_yay=(
     dolphin
     visual-studio-code-bin
     solaar-git # for Logitech device management
+    hyprcap # https://github.com/alonso-herreros/hyprcap
 )
 
 required_software_pacman=(
@@ -49,6 +50,7 @@ required_software_pacman=(
     flatpak
     fuse # for running .AppImage files
     brightnessctl
+    fuzzel # for hyprcap
 )
 
 set_terminal_in_hyprland_conf() {
