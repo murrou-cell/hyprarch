@@ -128,7 +128,7 @@ $TOWN
 
 Следващи часове:
 $HOURLY_FMT
-$([[ -n "$ALERT_TITLE" ]] && echo "⚠️ $ALERT_TITLE" || echo "Няма предупреждения")
+$([[ -n "$LEVEL" ]] && echo "⚠️ $ALERT_TITLE" || echo "Няма предупреждения")
 EOF
 )
 
