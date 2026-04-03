@@ -13,6 +13,7 @@
     ],
     "modules-right": [
         "mpris",
+        "custom/sysmon",
         "custom/pipewire",
         "custom/jamesDSP",
         "pulseaudio",
@@ -32,6 +33,13 @@
         "status-icons": {
             "paused": ""
         }
+    },
+    "custom/sysmon": {
+        "format": "{text}",
+        "exec": "~/.config/waybar/sysmon.sh",
+        "interval": 5,
+        "return-type": "json",
+        "tooltip": true
     },
     "custom/arch-updates": {
         "format": "{text}",
