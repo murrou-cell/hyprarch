@@ -70,6 +70,12 @@ This will guide you through:
 - Screen rotation/transformation (0°, 90°, 180°, 270°)
 - Workspace assignments
 
+#### 3. **Laptop Variant**
+The installed config ships with desktop defaults. To switch to the laptop variant (animations on, no solaar, hardware cursors on):
+```bash
+bash ~/hyprarch/LAPTOP_CONFIG.sh
+```
+
 #### 3. **Dual-Boot with Windows**
 If GRUB doesn't detect Windows 10/11:
 ```bash
