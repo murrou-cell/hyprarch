@@ -29,4 +29,4 @@ sed -i \
     "$CONF"
 done
 
-sed -i "\|firstboot.sh|d" ~/.config/hypr/hyprland.conf
+sed -i "\|firstboot.sh|d" ~/.config/hypr/hyprland.lua

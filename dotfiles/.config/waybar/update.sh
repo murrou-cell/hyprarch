@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Get terminal configured in hyprland
-TERMINAL=$(grep -oP '^\$terminal\s*=\s*\K.*' ~/.config/hypr/hyprland.conf 2>/dev/null || echo "kitty")
+TERMINAL=$(grep -oP '^local terminal\s*=\s*"\K[^"]+' ~/.config/hypr/hyprland.lua 2>/dev/null || echo "kitty")
 
 # Set terminal-specific flags
 if [[ "$TERMINAL" == "foot" ]]; then

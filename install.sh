@@ -54,16 +54,12 @@ required_software_pacman=(
 )
 
 set_terminal_in_hyprland_conf() {
-    echo "Setting terminal to $1 in hyprland.conf..."
+    echo "Setting terminal to $1 in hyprland.lua..."
     local terminal="$1"
-    local hyprland_conf="$HOME/.config/hypr/hyprland.conf"
+    local hyprland_conf="$HOME/.config/hypr/hyprland.lua"
 
-    if grep -q '^\$terminal\s*=' "$hyprland_conf"; then
-        sed -i "s|^\(\$terminal\s*=\s*\).*|\1$terminal|" "$hyprland_conf"
-    else
-        echo "\$terminal = $terminal" >> "$hyprland_conf"
-    fi
-    echo "Terminal set in hyprland.conf."
+    sed -i "s|^local terminal\s*=.*|local terminal    = \"$terminal\"|" "$hyprland_conf"
+    echo "Terminal set in hyprland.lua."
 }
 
 install_pacman_packages() {
@@ -128,10 +124,10 @@ dotfiles_installation() {
 }
 
 handle_firstboot() {
-    echo "Adding firstboot script to hyprland.conf..."
+    echo "Adding firstboot script to hyprland.lua..."
 
-    echo 'exec-once = ~/.config/hypr/firstboot.sh > ~/firstboot.log 2>&1' \
-        >> ~/.config/hypr/hyprland.conf
+    echo 'hl.on("hyprland.start", function() hl.exec_cmd("~/.config/hypr/firstboot.sh > ~/firstboot.log 2>&1") end) -- firstboot.sh' \
+        >> ~/.config/hypr/hyprland.lua
     
     echo "Firstboot script added."
 }

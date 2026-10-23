@@ -90,7 +90,7 @@ All configuration files are located in `~/.config/`:
 
 | Component | Config Location |
 |-----------|----------------|
-| Hyprland | `~/.config/hypr/hyprland.conf` |
+| Hyprland | `~/.config/hypr/hyprland.lua` |
 | Waybar | `~/.config/waybar/config` |
 | Wofi | `~/.config/wofi/` |
 | Hyprlock | `~/.config/hypr/hyprlock.conf` |
@@ -139,7 +139,7 @@ All configuration files are located in `~/.config/`:
 
 To view all keybindings:
 ```bash
-grep "^bind" ~/.config/hypr/hyprland.conf
+grep "hl.bind" ~/.config/hypr/hyprland.lua
 ```
 
 ### Updating Your Setup
@@ -161,7 +161,7 @@ or use stow if tou prefer
 
 **Problem: Terminal not working**
 - Verify installation: `which kitty` or `which foot`
-- Check hyprland.conf: `grep '\$terminal' ~/.config/hypr/hyprland.conf`
+- Check hyprland.lua: `grep "^local terminal" ~/.config/hypr/hyprland.lua`
 
 **Problem: Wallpaper not showing**
 - Verify hyprpaper is running: `ps aux | grep hyprpaper`
@@ -182,7 +182,7 @@ or use stow if tou prefer
 ### Customization
 
 **Change Terminal:**
-Edit `~/.config/hypr/hyprland.conf`:
+Edit `~/.config/hypr/hyprland.lua`:
 ```bash
 $terminal = foot  # or kitty
 ```
