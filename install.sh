@@ -51,6 +51,7 @@ required_software_pacman=(
     fuse # for running .AppImage files
     brightnessctl
     fuzzel # for hyprcap
+    squeekboard # on-screen keyboard, shown in tablet mode by osk-tablet-mode.py
 )
 
 set_terminal_in_hyprland_conf() {

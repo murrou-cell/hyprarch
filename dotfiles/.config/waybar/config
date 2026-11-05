@@ -41,6 +41,16 @@
         "return-type": "json",
         "tooltip": true
     },
+    "custom/launcher": {
+        "format": "\uf002",
+        "tooltip": false,
+        "on-click": "pgrep -x wofi >/dev/null && pkill -x wofi || wofi --show drun"
+    },
+    "custom/close": {
+        "format": "\uf00d",
+        "tooltip": false,
+        "on-click": "pkill -x wofi || hyprctl dispatch 'hl.dsp.window.close()'"
+    },
     "custom/arch-updates": {
         "format": "{text}",
         "interval": 3600,
@@ -135,8 +145,8 @@
         "menu": "on-click",
         "menu-file": "~/.config/waybar/lang_menu.xml",
         "menu-actions": {
-            "us": "hyprctl switchxkblayout at-translated-set-2-keyboard 0",
-            "bg": "hyprctl switchxkblayout at-translated-set-2-keyboard 1"
+            "us": "hyprctl switchxkblayout at-translated-set-2-keyboard 0; gsettings set org.gnome.desktop.input-sources sources \"[('xkb', 'us'), ('xkb', 'bg+phonetic')]\"",
+            "bg": "hyprctl switchxkblayout at-translated-set-2-keyboard 1; gsettings set org.gnome.desktop.input-sources sources \"[('xkb', 'bg+phonetic'), ('xkb', 'us')]\""
         }
     },
     "custom/weather": {

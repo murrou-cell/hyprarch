@@ -144,3 +144,7 @@ menuitem {
 #custom-weather.alert-red    { color: #e74c3c; }
 
 #custom-weather.ok { color: #aaffaa; }
+#custom-launcher,
+#custom-close {
+    padding: 0 12px;
+}

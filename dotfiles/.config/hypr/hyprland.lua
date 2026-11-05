@@ -11,7 +11,7 @@ local mainMod     = "SUPER"
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("hyprpaper & swaync & hypridle & waybar & solaar")
+    hl.exec_cmd("hyprpaper & swaync & hypridle & waybar & solaar & ~/.config/hypr/scripts/osk-tablet-mode.py")
 end)
 
 hl.env("XCURSOR_SIZE", "24")
