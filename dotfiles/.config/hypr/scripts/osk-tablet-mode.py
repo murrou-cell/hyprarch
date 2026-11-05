@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Run squeekboard only while the laptop is in tablet mode (SW_TABLET_MODE).
-import fcntl, glob, os, re, struct, subprocess, sys
+import fcntl, glob, os, struct, subprocess, sys
 
 EV_SW, SW_TABLET_MODE = 0x05, 0x01
 
@@ -21,40 +21,28 @@ def has_tablet_switch(path):
         os.close(fd)
 
 proc = None
-lp = None
+kids = {}
 last = None
-WB = os.path.expanduser("~/.config/waybar")
-RT = os.environ.get("XDG_RUNTIME_DIR", "/tmp")
-TOUCH_CSS = "* { font-size: 20px; } #custom-launcher, #custom-close, #clock, #battery, #network, #pulseaudio, #bluetooth, #language, #workspaces button { padding: 0 16px; }"
+SELF = os.path.dirname(os.path.abspath(__file__))
 
 def restart_waybar(tablet):
-    subprocess.run(["pkill", "-x", "waybar"])
-    args = ["waybar"]
-    if tablet:
-        cfg, css = RT + "/waybar-touch.json", RT + "/waybar-touch.css"
-        txt = re.sub(r'"height":\s*\d+', '"height": 52', open(WB + "/config").read(), 1)
-        txt = txt.replace('"modules-left": [', '"modules-left": [\n"custom/launcher", "custom/close",', 1)
-        open(cfg, "w").write(txt)
-        open(css, "w").write(open(WB + "/style.css").read() + "\n" + TOUCH_CSS)
-        args += ["-c", cfg, "-s", css]
-    subprocess.Popen(args, start_new_session=True)
-
-# Squeekboard layouts mirror hyprland kb_layout/kb_variant.
-subprocess.run(["gsettings", "set", "org.gnome.desktop.input-sources", "sources", "[('xkb', 'us'), ('xkb', 'bg+phonetic')]"])
+    subprocess.run([SELF + "/waybar-touch.py", "landscape" if tablet else "normal"])
 
 def apply(tablet):
-    global proc, last, lp
-    if tablet != last and (last is not None or tablet):
+    global proc, last
+    prev, last = last, tablet
+    for script in ("touch-longpress.py", "tablet-rotate.py"):
+        child = kids.get(script)
+        if child and child.poll() is not None:
+            child = kids[script] = None
+        if tablet and not child:
+            kids[script] = subprocess.Popen([os.path.join(os.path.dirname(os.path.abspath(__file__)), script)], start_new_session=True)
+        elif not tablet and child:
+            child.terminate()
+            child.wait()
+            kids[script] = None
+    if tablet != prev and (prev is not None or tablet):
         restart_waybar(tablet)
-    last = tablet
-    if lp and lp.poll() is not None:
-        lp = None
-    if tablet and not lp:
-        lp = subprocess.Popen([os.path.dirname(os.path.abspath(__file__)) + "/touch-longpress.py"], start_new_session=True)
-    elif not tablet and lp:
-        lp.terminate()
-        lp.wait()
-        lp = None
     if proc and proc.poll() is not None:
         proc = None
     subprocess.run(["gsettings", "set", "org.gnome.desktop.a11y.applications", "screen-keyboard-enabled", "true" if tablet else "false"])

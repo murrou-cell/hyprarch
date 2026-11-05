@@ -45,8 +45,12 @@ def emit(u, t, c, v):
 def warp_to_touch():
     m = json.loads(subprocess.check_output(["hyprctl", "-j", "monitors"]))[0]
     w, h = m["width"] / m["scale"], m["height"] / m["scale"]
-    x = m["x"] + pos.get(POSX, 0) / rx * w
-    y = m["y"] + pos.get(POSY, 0) / ry * h
+    nx, ny = pos.get(POSX, 0) / rx, pos.get(POSY, 0) / ry
+    t = m["transform"] % 4
+    nx, ny = [(nx, ny), (ny, 1 - nx), (1 - nx, 1 - ny), (1 - ny, nx)][t]
+    if t % 2:
+        w, h = h, w
+    x, y = m["x"] + nx * w, m["y"] + ny * h
     subprocess.run(["hyprctl", "dispatch", "hl.dsp.cursor.move({ x = %d, y = %d })" % (x, y)], capture_output=True)
     time.sleep(0.05)
 
