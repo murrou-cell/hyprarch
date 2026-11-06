@@ -92,7 +92,6 @@ SCHEMA = [
     E("chk", "cursor.hide_on_key_press", "bool", "hide while typing", "input", "Cursor", d=False),
     E("cwp", "cursor.warp_on_change_workspace", "enum", "warp on workspace change", "input", "Cursor", c=[0, 1, 2], d=0),
     E("mhl", "misc.disable_hyprland_logo", "bool", "disable logo", "input", "Misc", d=False),
-    E("mds", "misc.disable_splash_rendering", "bool", "disable splash text", "input", "Misc", d=False),
     E("mam", "misc.animate_manual_resizes", "bool", "animate manual resizes", "input", "Misc", d=False),
     E("mad", "misc.animate_mouse_windowdragging", "bool", "animate window dragging", "input", "Misc", d=False),
     E("mfa", "misc.focus_on_activate", "bool", "focus on activate", "input", "Misc", d=False),
@@ -400,6 +399,12 @@ def safe_image(path):
     return rp
 
 
+def read_splash():
+    conf = open(PAPER).read() if os.path.exists(PAPER) else ""
+    m = re.search(r"^\s*splash\s*=\s*(\w+)", conf, re.M)
+    return not m or m.group(1).lower() in ("true", "1", "yes", "on")
+
+
 def read_wall():
     conf = open(PAPER).read() if os.path.exists(PAPER) else ""
     cur = {}
@@ -411,7 +416,7 @@ def read_wall():
             for m in read_monitors()]
 
 
-def apply_wall(walls):
+def apply_wall(walls, splash=False):
     names = {m["name"] for m in read_monitors()}
     blocks = []
     for w in walls:
@@ -424,7 +429,7 @@ def apply_wall(walls):
         blocks.append(f"wallpaper {{\n    monitor = {name}\n    path = {safe_image(w['path'])}\n    fit_mode = {fit}\n}}\n")
     if not blocks:
         raise ValueError("pick at least one wallpaper")
-    text = "\n".join(blocks)
+    text = f"splash = {'true' if splash else 'false'}\n\n" + "\n".join(blocks)
     for d in (HYPR, REPO):
         if os.path.isdir(d):
             open(os.path.join(d, "hyprpaper.conf"), "w").write(text)
@@ -468,7 +473,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if self.path == "/api/monitors":
             return self.send(200, json.dumps({"monitors": read_monitors()}))
         if self.path == "/api/wall":
-            return self.send(200, json.dumps({"walls": read_wall(), "images": list_images(), "fits": FITS, "live": hyprctl("hyprpaper", "listactive")}))
+            return self.send(200, json.dumps({"walls": read_wall(), "splash": read_splash(), "images": list_images(), "fits": FITS, "live": hyprctl("hyprpaper", "listactive")}))
         if self.path.startswith("/api/img?p="):
             from urllib.parse import unquote
             try:
@@ -536,8 +541,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 open(MON_FILE, "w").write("-- written by hypr-tune.py\n" + monitors_lua(ms))
                 return self.send(200, json.dumps({"saved": True}))
             if p == "/api/wall/apply":
-                apply_wall(body.get("walls", []))
-                return self.send(200, json.dumps({"walls": read_wall(), "live": hyprctl("hyprpaper", "listactive")}))
+                apply_wall(body.get("walls", []), body.get("splash") is True)
+                return self.send(200, json.dumps({"walls": read_wall(), "splash": read_splash(), "live": hyprctl("hyprpaper", "listactive")}))
             if p == "/api/quit":
                 self.send(200, "{}")
                 threading.Thread(target=self.server.shutdown).start()
@@ -859,18 +864,20 @@ async function monApply(){
 }
 
 /* ---- wallpaper ---- */
-let WALL=[],IMGS=[],FITS=[];
+let WALL=[],IMGS=[],FITS=[],SPLASH=false;
 const imgUrl=p=>'/api/img?p='+encodeURIComponent(p);
 function wallPanel(){
   const p=el('div','panel');p.style.gridColumn='1/-1';
   p.innerHTML=`<h3>Wallpaper (hyprpaper)</h3><div id="wcards" class="grid"></div>
   <p class="note">Each monitor needs its own entry, a monitor with none shows Hyprland's default background with the logo and splash text. Pick from images found in ~/.config/hypr, ~/Pictures and ~/Downloads, or type a full path under your home folder. Apply rewrites hyprpaper.conf and restarts hyprpaper (about a second).</p>
+  <div class="ctl"><label>splash text</label><select id="wsplash" aria-label="splash text"><option value="0">hidden</option><option value="1">shown ("This text is random.")</option></select></div>
   <div class="tog"><button id="wapply" class="primary">apply wallpapers</button></div><div class="err" id="werr"></div><div class="note" id="wlive"></div>`;
-  p.querySelector('#wapply').onclick=async()=>{$('werr').textContent='';const d=await api('/api/wall/apply',{walls:WALL});if(d.error)return $('werr').textContent=d.error;WALL=d.walls;$('wlive').textContent='active: '+d.live.replace(/\n/g,' | ');wallDraw();};
+  p.querySelector('#wapply').onclick=async()=>{$('werr').textContent='';const d=await api('/api/wall/apply',{walls:WALL,splash:SPLASH});if(d.error)return $('werr').textContent=d.error;WALL=d.walls;SPLASH=d.splash;$('wlive').textContent='active: '+d.live.replace(/\n/g,' | ');wallDraw();};
   return p;
 }
-async function wallLoad(){const d=await api('/api/wall');WALL=d.walls;IMGS=d.images;FITS=d.fits;$('wlive').textContent='active: '+d.live.replace(/\n/g,' | ');wallDraw();}
+async function wallLoad(){const d=await api('/api/wall');WALL=d.walls;SPLASH=d.splash;IMGS=d.images;FITS=d.fits;$('wlive').textContent='active: '+d.live.replace(/\n/g,' | ');wallDraw();}
 function wallDraw(){
+  const sp=$('wsplash');if(sp){sp.value=SPLASH?'1':'0';sp.onchange=()=>{SPLASH=sp.value==='1';};}
   const box=$('wcards');if(!box)return;box.innerHTML='';
   WALL.forEach(w=>{
     const c=el('div','panel');
