@@ -52,6 +52,7 @@ required_software_pacman=(
     brightnessctl
     fuzzel # for hyprcap
     squeekboard # on-screen keyboard, shown in tablet mode by osk-tablet-mode.py
+    swayosd # volume/brightness popup, started from hyprland.lua
 )
 
 set_terminal_in_hyprland_conf() {
