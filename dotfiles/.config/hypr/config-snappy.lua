@@ -10,9 +10,9 @@ hl.config({
         rounding = 0,
         active_opacity = 1.0,
         inactive_opacity = 1.0,
-        dim_inactive = true, dim_strength = 0.35,
+        dim_inactive = true, dim_strength = 0.4,
         shadow = { enabled = true, range = 4, render_power = 4 },
-        blur = { enabled = true, size = 8, passes = 2, vibrancy = 0.0 },
+        blur = { enabled = true, size = 3, passes = 1, vibrancy = 0.0 },
     },
     animations = { enabled = true },
 })
