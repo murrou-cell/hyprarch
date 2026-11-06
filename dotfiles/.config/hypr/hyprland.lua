@@ -60,6 +60,7 @@ hl.device({ name = "epic-mouse-v1", sensitivity = -0.5 })
 
 -- Keybindings
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("~/.config/hypr/scripts/hypr-tune.py"))
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
@@ -78,6 +79,10 @@ hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
+hl.bind(mainMod .. " + SHIFT + left", hl.dsp.window.swap({ direction = "left" }))
+hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.swap({ direction = "right" }))
+hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.swap({ direction = "up" }))
+hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.swap({ direction = "down" }))
 
 for i = 1, 10 do
     local key = i % 10
@@ -106,3 +111,6 @@ hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = tr
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+
+-- Optional profile overlay written by scripts/hypr-profile.sh
+pcall(require, "profile")
